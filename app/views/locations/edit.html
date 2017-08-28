@@ -9,7 +9,7 @@
   <body>
     <!-- <script type="text/javascript" src="editableTable.js"></script> -->
     <!-- <div class="" id="table"> -->
-      <table>
+      <table id="table">
         <tr>
           <th>Name</th>
           <th>Address</th>
@@ -44,7 +44,7 @@
           link: "",
           phoneNumber: "",
         }
-        $("table").append("<tr><td>" + data.name + "</td><td>" + data.address + "</td><td>" + data.description + "</td><td>" + data.link + "</td><td>" + data.phoneNumber + "</td></tr>")
+        $("table").append("<tr class='rowOfData'><td>" + data.name + "</td><td>" + data.address + "</td><td>" + data.description + "</td><td>" + data.link + "</td><td>" + data.phoneNumber + "</td></tr>")
         // makeEditable()
         $('table').editableTableWidget();
       }
@@ -54,19 +54,47 @@
     <script type="text/javascript">
       function getData() {
         $.get("/locations", function(data) {
-          console.log(data);
           data.forEach(function(location) {
-            addRow(location)
+            if (location.name || location.address || location.address || location.description || location.link || location.phoneNumber) {
+              addRow(location)
+            }
           })
         })
       }
       getData();
+      function saveData() {
+        locations = [];
+        var location = {};
+        $(".rowOfData").each(function(index, row) {
+          location = {};
+          location["name"] = row.cells[0].innerHTML;
+          location["address"] = row.cells[1].innerHTML;
+          location["description"] = row.cells[2].innerHTML;
+          location["link"] = row.cells[3].innerHTML;
+          location["phone_number"] = row.cells[4].innerHTML;
+          locations.push(location)
+        })
+
+        console.log(locations);
+
+        $.ajax({
+          // contentType: "application/json",
+          type: "PUT",
+          url: "/locations/1",
+          data: {locations: locations},
+          success: function(res) {
+            console.log(res);
+          },
+          error: function(e) {
+            console.log(e);
+          }
+        })
+      }
     </script>
     <script type="text/javascript">
     /*global $, window*/
     makeEditable()
     function makeEditable() {
-      console.log("Making editable");
       $.fn.editableTableWidget = function (options) {
         'use strict';
         return $(this).each(function () {
