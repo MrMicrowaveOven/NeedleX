@@ -53,20 +53,15 @@
               // });
           });
         })
+      }
 
-      // var marker = new google.maps.Marker({
-      //     position: {lat: lat, lng: lng},
-      //     map: map
-      // });
-    }
-
-    // Include Google Maps script with env variables
-    var GOOGLE_API_KEY = $.get("/welcome/1", function(googleApiKey) {
-      var JSLink = "https://maps.googleapis.com/maps/api/js?key=" + googleApiKey.GoogleAPIKey + "&callback=makeMap";
-      var JSElement = document.createElement('script');
-      JSElement.src = JSLink;
-      document.getElementsByTagName('head')[0].appendChild(JSElement);
-    })
+      // Include Google Maps script with env variables
+      var GOOGLE_API_KEY = $.get("/welcome/1", function(googleApiKey) {
+        var JSLink = "https://maps.googleapis.com/maps/api/js?key=" + googleApiKey.GoogleAPIKey + "&callback=makeMap";
+        var JSElement = document.createElement('script');
+        JSElement.src = JSLink;
+        document.getElementsByTagName('head')[0].appendChild(JSElement);
+      })
     </script>
     <style media="screen">
     #map {

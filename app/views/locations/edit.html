@@ -85,45 +85,64 @@
           locations.push(location)
         })
 
-        console.log(locations);
+        $.get("/locations", function(oldLocations) {
+          locations.forEach(function(location) {
+            // console.log();
+            sameLocation = oldLocations.filter(function(oldLocation) {
+              return oldLocation["address"] == location["address"]
+            })
+            if (sameLocation.length > 0) {
+              location["lat"] = sameLocation[0]["lat"]
+              location["lng"] = sameLocation[0]["lng"]
+            }
+          })
+          $.ajax({
+            // contentType: "application/json",
+            type: "DELETE",
+            url: "/locations/1",
+            // data: location,
+            success: function(res) {
+              // console.log(res);
+              geocoder = new google.maps.Geocoder();
+              locations.forEach(function(location, location_index) {
+                setTimeout(function() {
+                  if (!location["lat"] || !location["lng"]) {
+                    geocoder.geocode( { 'address': location.address}, function(results, status) {
+                      console.log("GEOMETRY");
+                      // console.log(results);
+                      // console.log(status);
+                      location["lat"] = results[0].geometry.location.lat;
+                      location["lng"] = results[0].geometry.location.lng;
+                      postLocation(location)
 
-        $.ajax({
-          // contentType: "application/json",
-          type: "DELETE",
-          url: "/locations/1",
-          // data: location,
-          success: function(res) {
-            console.log(res);
-          },
-          error: function(e) {
-            console.log(e);
-          }
+                    })
+                  } else {
+                    postLocation(location)
+                  }
+                }, 200 * location_index)
+              })
+            },
+            error: function(e) {
+              console.log(e);
+            }
+          })
+
         })
 
-        geocoder = new google.maps.Geocoder();
-        locations.forEach(function(location, location_index) {
-          setTimeout(function() {
-            geocoder.geocode( { 'address': location.address}, function(results, status) {
-              console.log("GEOMETRY");
-              console.log(results);
-              console.log(status);
-              location["lat"] = results[0].geometry.location.lat;
-              location["lng"] = results[0].geometry.location.lng;
-              $.ajax({
-                // contentType: "application/json",
-                type: "POST",
-                url: "/locations",
-                data: {location: location},
-                success: function(res) {
-                  console.log(res);
-                },
-                error: function(e) {
-                  console.log(e);
-                }
-              })
 
-            })
-          }, 200 * location_index)
+
+      }
+      function postLocation(location) {
+        $.ajax({
+          type: "POST",
+          url: "/locations",
+          data: {location: location},
+          success: function(res) {
+            // console.log(res);
+          },
+          error: function(e) {
+            // console.log(e);
+          }
         })
       }
     </script>
