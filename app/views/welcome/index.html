@@ -29,10 +29,28 @@
           geocoder.geocode( { 'address': location.address}, function(results, status) {
             if (status == 'OK') {
               // map.setCenter(results[0].geometry.location);
+              // var image = {
+              //   url: "https://maxcdn.icons8.com/Share/icon/Healthcare//syringe1600.png",
+              //   size: new google.maps.Size(20, 20),
+                // origin: new google.maps.Point(0, 0),
+                // anchor: new google.maps.Point(0, 32)
+              // }
               var marker = new google.maps.Marker({
                 map: map,
-                position: results[0].geometry.location
+                position: results[0].geometry.location,
+                // icon: image
               });
+
+              var infowindow = new google.maps.InfoWindow({
+                content: location.address
+              });
+              marker.addListener('click', function() {
+                infowindow.open(map, marker);
+              });
+              // google.maps.event.addListener(map, 'click', infowindow.close());
+              // marker.addListener('blur', function() {
+              //   infowindow.close();
+              // });
             } else {
               alert('Geocode was not successful for the following reason: ' + status);
             }
