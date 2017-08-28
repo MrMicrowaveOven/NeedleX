@@ -19,6 +19,8 @@ class LocationsController < ApplicationController
     num_locations.times do |location_index|
       location_object = locations[location_index.to_s]
       location = {
+        day: location_object[:day],
+        time: location_object[:time],
         name: location_object[:name],
         address: location_object[:address],
         description: location_object[:description],
