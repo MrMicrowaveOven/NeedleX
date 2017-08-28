@@ -19,6 +19,13 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
       }
       var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+
+      var marker = new google.maps.Marker({
+          position: {lat: lat, lng: lng},
+          map: map
+      });
+
     }
 
     // Include Google Maps script with env variables
