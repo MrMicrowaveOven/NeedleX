@@ -123,11 +123,14 @@
                     console.log("GEOLOCATING");
                     // console.log(location);
                     geocoder.geocode( { 'address': newLocation.address}, function(results, status) {
-                      console.log(results);
                       console.log(status);
-                      newLocation["lat"] = results[0].geometry.location.lat;
-                      newLocation["lng"] = results[0].geometry.location.lng;
-                      postLocation(newLocation)
+                      if (status == "OK") {
+                        newLocation["lat"] = results[0].geometry.location.lat;
+                        newLocation["lng"] = results[0].geometry.location.lng;
+                        postLocation(newLocation)
+                      } else {
+                        console.log("I couldn't find this address: " + newLocation.address);
+                      }
                     })
                   } else {
                     postLocation(newLocation)
