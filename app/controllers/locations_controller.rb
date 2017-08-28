@@ -8,6 +8,12 @@ class LocationsController < ApplicationController
 
   end
 
+  def destroy
+    Location.all.each do |location|
+      location.destroy
+    end
+  end
+
   def update
     # Delete all current locations
     Location.all.each do |location|
@@ -44,6 +50,6 @@ class LocationsController < ApplicationController
 
   private
   def location_params
-    params.require(:location).permit(:day, :time, :name, :address, :description, :link, :phone_number)
+    params.require(:location).permit(:day, :time, :name, :address, :description, :link, :phone_number, :lat, :lng)
   end
 end

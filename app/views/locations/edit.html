@@ -19,20 +19,6 @@
           <th>Link</th>
           <th>Phone Number</th>
         </tr>
-        <!-- <tr>
-          <td>Benjamin</td>
-          <td>Benjamin</td>
-          <td>Benjamin</td>
-          <td>Benjamin</td>
-          <td>Benjamin</td>
-        </tr>
-        <tr>
-          <td>Yo</td>
-          <td>Yo</td>
-          <td>Yo</td>
-          <td>Yo</td>
-          <td>Yo</td>
-        </tr> -->
       </table>
     <!-- </div> -->
     <button type="button" name="button" onclick="addRow()">Add Row</button>
@@ -75,6 +61,15 @@
         })
       }
       getData();
+
+      // Include Google Maps script with env variables
+      var GOOGLE_API_KEY = $.get("/welcome/1", function(googleApiKey) {
+        var JSLink = "https://maps.googleapis.com/maps/api/js?key=" + googleApiKey.GoogleAPIKey;
+        var JSElement = document.createElement('script');
+        JSElement.src = JSLink;
+        document.getElementsByTagName('head')[0].appendChild(JSElement);
+      })
+
       function saveData() {
         locations = [];
         var location = {};
@@ -94,15 +89,41 @@
 
         $.ajax({
           // contentType: "application/json",
-          type: "PUT",
+          type: "DELETE",
           url: "/locations/1",
-          data: {locations: locations},
+          // data: location,
           success: function(res) {
             console.log(res);
           },
           error: function(e) {
             console.log(e);
           }
+        })
+
+        geocoder = new google.maps.Geocoder();
+        locations.forEach(function(location, location_index) {
+          setTimeout(function() {
+            geocoder.geocode( { 'address': location.address}, function(results, status) {
+              console.log("GEOMETRY");
+              console.log(results);
+              console.log(status);
+              location["lat"] = results[0].geometry.location.lat;
+              location["lng"] = results[0].geometry.location.lng;
+              $.ajax({
+                // contentType: "application/json",
+                type: "POST",
+                url: "/locations",
+                data: {location: location},
+                success: function(res) {
+                  console.log(res);
+                },
+                error: function(e) {
+                  console.log(e);
+                }
+              })
+
+            })
+          }, 200 * location_index)
         })
       }
     </script>

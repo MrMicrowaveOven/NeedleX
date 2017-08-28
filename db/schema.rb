@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170828053023) do
+ActiveRecord::Schema.define(version: 20170828191411) do
 
   create_table "locations", force: :cascade do |t|
     t.string "name"
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 20170828053023) do
     t.datetime "updated_at", null: false
     t.string "day"
     t.string "time"
+    t.decimal "lat"
+    t.decimal "lng"
   end
 
 end

@@ -25,8 +25,6 @@
       $.get("/locations", function(data) {
         console.log(data);
         data.forEach(function(location) {
-          geocoder.geocode( { 'address': location.address}, function(results, status) {
-            if (status == 'OK') {
               // map.setCenter(results[0].geometry.location);
               // var image = {
               //   url: "https://maxcdn.icons8.com/Share/icon/Healthcare//syringe1600.png",
@@ -36,7 +34,7 @@
               // }
               var marker = new google.maps.Marker({
                 map: map,
-                position: results[0].geometry.location,
+                position: {lat: parseFloat(location.lat), lng: parseFloat(location.lng)},
                 // icon: image
               });
 
@@ -53,15 +51,8 @@
               // marker.addListener('blur', function() {
               //   infowindow.close();
               // });
-            } else {
-              console.log(status);
-              // alert('Geocode was not successful for the following reason: ' + status);
-            }
           });
         })
-
-
-      });
 
       // var marker = new google.maps.Marker({
       //     position: {lat: lat, lng: lng},
