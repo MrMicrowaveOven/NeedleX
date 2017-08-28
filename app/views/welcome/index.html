@@ -25,7 +25,6 @@
       $.get("/locations", function(data) {
         console.log(data);
         data.forEach(function(location) {
-          // console.log(location.address);
           geocoder.geocode( { 'address': location.address}, function(results, status) {
             if (status == 'OK') {
               // map.setCenter(results[0].geometry.location);
@@ -41,7 +40,7 @@
                 // icon: image
               });
 
-              var contentString = (location.name || "") + "<br>" + location.address + "<br>" + location.description
+              var contentString = (location.day || "") + "<br>" + (location.time || "") + "<br>" + (location.name || "") + "<br>" + location.address + "<br>" + location.description
                 + "<br>" + location.link + "<br>" + (location.phoneNumber || "")
 
               var infowindow = new google.maps.InfoWindow({
@@ -55,7 +54,8 @@
               //   infowindow.close();
               // });
             } else {
-              alert('Geocode was not successful for the following reason: ' + status);
+              console.log(status);
+              // alert('Geocode was not successful for the following reason: ' + status);
             }
           });
         })
