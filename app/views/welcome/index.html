@@ -41,8 +41,11 @@
                 // icon: image
               });
 
+              var contentString = (location.name || "") + "<br>" + location.address + "<br>" + location.description
+                + "<br>" + location.link + "<br>" + (location.phoneNumber || "")
+
               var infowindow = new google.maps.InfoWindow({
-                content: location.address
+                content: contentString
               });
               marker.addListener('click', function() {
                 infowindow.open(map, marker);
