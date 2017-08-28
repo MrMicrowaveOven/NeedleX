@@ -4,6 +4,10 @@ class LocationsController < ApplicationController
     render json: Location.all
   end
 
+  def edit
+    
+  end
+
   def create
     # render json: location_params
 
