@@ -92,19 +92,23 @@
         })
       })
 
+      function setLatAndLngForExistingLocations(newLocations, oldLocations) {
+        newLocations.forEach(function(newLocation) {
+          // console.log();
+          sameLocation = oldLocations.filter(function(oldLocation) {
+            return oldLocation["address"] == newLocation["address"]
+          })
+          if (sameLocation.length > 0) {
+            newLocation["lat"] = sameLocation[0]["lat"]
+            newLocation["lng"] = sameLocation[0]["lng"]
+          }
+        })
+      }
+
       function saveData() {
         newLocations = getFormData()
         getDatabaseLocations.then(function(oldLocations) {
-          newLocations.forEach(function(newLocation) {
-            // console.log();
-            sameLocation = oldLocations.filter(function(oldLocation) {
-              return oldLocation["address"] == newLocation["address"]
-            })
-            if (sameLocation.length > 0) {
-              newLocation["lat"] = sameLocation[0]["lat"]
-              newLocation["lng"] = sameLocation[0]["lng"]
-            }
-          })
+          setLatAndLngForExistingLocations(newLocations, oldLocations)
           $.ajax({
             // contentType: "application/json",
             type: "DELETE",
@@ -135,11 +139,7 @@
               console.log(e);
             }
           })
-
         })
-
-
-
       }
       function postLocation(location) {
         $.ajax({
