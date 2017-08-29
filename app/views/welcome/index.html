@@ -38,8 +38,6 @@
 
           var contentString = location.name + "<br>" + location.address + "<br>";
 
-
-
           location.description ? contentString += location.description + "<br>" : 0;
           location.link ? contentString += location.link + "<br>" : 0;
           location.phone_number ? contentString += location.phone_number + "<br>" : 0;
@@ -52,10 +50,10 @@
             infowindow.open(map, marker);
           });
           // google.maps.event.addListener(map, 'click', infowindow.close());
-          // marker.addListener('blur', function() {
-          //   infowindow.close();
-          // });
+          map.addListener('click', function() {
+            infowindow.close();
           });
+        });
         })
       }
 
