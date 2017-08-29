@@ -11,8 +11,8 @@
     </div>
     <script type="text/javascript">
     function makeMap(lat, lng) {
-      lat = lat || 37.76
-      lng = lng || -122.44
+      lat = lat || 37.765
+      lng = lng || -122.42
       var mapOptions = {
         center: new google.maps.LatLng(lat, lng),
         zoom: 13,
@@ -23,38 +23,38 @@
       $.get("/locations", function(data) {
         console.log(data);
         data.forEach(function(location) {
-              // map.setCenter(results[0].geometry.location);
-              // var image = {
-              //   url: "https://maxcdn.icons8.com/Share/icon/Healthcare//syringe1600.png",
-              //   size: new google.maps.Size(20, 20),
-                // origin: new google.maps.Point(0, 0),
-                // anchor: new google.maps.Point(0, 32)
-              // }
-              var marker = new google.maps.Marker({
-                map: map,
-                position: {lat: parseFloat(location.lat), lng: parseFloat(location.lng)},
-                // icon: image
-              });
+          // map.setCenter(results[0].geometry.location);
+          var image = {
+            url: "https://68.media.tumblr.com/08815ef78ff0dc07bf671d7dc25f2428/tumblr_ovgx0j0zXk1v497yzo1_75sq.png",
+            // size: new google.maps.Size(64, 64),
+            // origin: new google.maps.Point(0, 0),
+            // anchor: new google.maps.Point(128, 128)
+          }
+          var marker = new google.maps.Marker({
+            map: map,
+            position: {lat: parseFloat(location.lat), lng: parseFloat(location.lng)},
+            icon: image
+          });
 
-              var contentString = location.name + "<br>" + location.address + "<br>";
+          var contentString = location.name + "<br>" + location.address + "<br>";
 
 
 
-              location.description ? contentString += location.description + "<br>" : 0;
-              location.link ? contentString += location.link + "<br>" : 0;
-              location.phone_number ? contentString += location.phone_number + "<br>" : 0;
-              contentString += location.day + "<br>" + location.time + "<br>";
+          location.description ? contentString += location.description + "<br>" : 0;
+          location.link ? contentString += location.link + "<br>" : 0;
+          location.phone_number ? contentString += location.phone_number + "<br>" : 0;
+          contentString += location.day + "<br>" + location.time + "<br>";
 
-              var infowindow = new google.maps.InfoWindow({
-                content: contentString
-              });
-              marker.addListener('click', function() {
-                infowindow.open(map, marker);
-              });
-              // google.maps.event.addListener(map, 'click', infowindow.close());
-              // marker.addListener('blur', function() {
-              //   infowindow.close();
-              // });
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+          marker.addListener('click', function() {
+            infowindow.open(map, marker);
+          });
+          // google.maps.event.addListener(map, 'click', infowindow.close());
+          // marker.addListener('blur', function() {
+          //   infowindow.close();
+          // });
           });
         })
       }
