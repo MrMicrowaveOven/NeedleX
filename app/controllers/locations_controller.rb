@@ -45,13 +45,13 @@ class LocationsController < ApplicationController
   def default_spreadsheet
     [
       {day: "Mon-Fri, 9-5pm", time: "Sat, 7-11pm", name: "SFAF SAS", address: "117 6th Street, San Francisco, CA", description: "Harm Reduction Center", link: "", phone_number: "(415)487-8043"},
-      {day: "Mon-Wed + Fri + Sun", time: "12-4:30pm", name: "SFDUU", address: "149 Turk Street, San Francisco, CA", description: "", link: "", phone_number: "(415)990-3827"},
+      {day: "Mon-Wed & Fri & Sun", time: "12-4:30pm", name: "SFDUU", address: "149 Turk Street, San Francisco, CA", description: "", link: "", phone_number: "(415)990-3827"},
       {day: "Mon", time: "4-6pm", name: "SFAF SAS", address: "3rd Street and Innes Ave, San Francisco, CA", description: "Look for white van", link: "", phone_number: "(415)487-8043"},
-      {day: "Mon/Wed/Fri", time: "5:30-7:30pm", name: "SFNE", address: "558 Claton St, San Francisco, CA", description: "In the free clinic upstairs", link: "", phone_number: "(415)630-0744"},
-      {day: "Mon/Tues", time: "7-9pm", name: "Glide", address: "330 Ellis, San Francisco, CA", description: "Between Jones and Taylor", link: "", phone_number: "(415)674-5180"},
+      {day: "Mon & Wed & Fri", time: "5:30-7:30pm", name: "SFNE", address: "558 Claton St, San Francisco, CA", description: "In the free clinic upstairs", link: "", phone_number: "(415)630-0744"},
+      {day: "Mon & Tues", time: "7-9pm", name: "Glide", address: "330 Ellis, San Francisco, CA", description: "Between Jones and Taylor", link: "", phone_number: "(415)674-5180"},
       {day: "Tues", time: "10-12pm", name: "SFAF SAS", address: "117-A 6th St, San Francisco, CA", description: "Between Mission and Howard", link: "", phone_number: "(415)487-8043"},
       # {day: "Tues", time: "12-4:30pm", name: "SFDUU", address: "149 Turk St, San Francisco, CA", description: "", link: "", phone_number: "(415)990-3827"},
-      {day: "Tues/Sat", time: "2-5pm", name: "TransThrive", address: "730 Polk St, San Francisco, CA", description: "Transgender only. 4th floor.", link: "", phone_number: "(415)409-4101"},
+      {day: "Tues & Sat", time: "2-5pm", name: "TransThrive", address: "730 Polk St, San Francisco, CA", description: "Transgender only. 4th floor.", link: "", phone_number: "(415)409-4101"},
       {day: "Tues", time: "6-8pm", name: "SFAF SAS", address: "Church and Market", description: "On Duboce St, in bikeway behind Safeway", link: "", phone_number: "(415)487-8043"},
       # {day: "Tues", time: "7-9pm", name: "Glide", address: "330 Ellis, San Francisco, CA", description: "Between Jones and Taylor", link: "", phone_number: "(415)674-5180"},
       # {day: "Wed", time: "12-4:30", name: "SFDUU", address: "149 Turk St, San Francisco, CA", description: "", link: "", phone_number: "(415)990-3827"},
