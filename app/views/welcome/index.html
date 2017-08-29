@@ -36,8 +36,14 @@
                 // icon: image
               });
 
-              var contentString = (location.name || "") + "<br>" + location.address + "<br>" + location.description
-                + "<br>" + (location.link + "<br>" || "") + (location.phoneNumber || "") + "<br>" + (location.day || "") + "<br>" + (location.time || "") + "<br>"
+              var contentString = location.name + "<br>" + location.address + "<br>";
+
+
+
+              location.description ? contentString += location.description + "<br>" : 0;
+              location.link ? contentString += location.link + "<br>" : 0;
+              location.phone_number ? contentString += location.phone_number + "<br>" : 0;
+              contentString += location.day + "<br>" + location.time + "<br>";
 
               var infowindow = new google.maps.InfoWindow({
                 content: contentString
