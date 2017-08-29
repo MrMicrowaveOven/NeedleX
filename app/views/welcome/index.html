@@ -36,11 +36,12 @@
             icon: image
           });
 
-          var contentString = location.name + "<br>" + location.address + "<br>";
+          var contentString = "<h3>" + location.name + "</h3>" + location.address + "<br>";
 
           location.description ? contentString += location.description + "<br>" : 0;
           location.link ? contentString += location.link + "<br>" : 0;
           location.phone_number ? contentString += location.phone_number + "<br>" : 0;
+          contentString += "<strong>Hours:</strong><br>"
           contentString += location.day + "<br>" + location.time + "<br>";
 
           var infowindow = new google.maps.InfoWindow({
