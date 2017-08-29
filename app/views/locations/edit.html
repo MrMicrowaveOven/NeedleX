@@ -128,14 +128,18 @@
                         newLocation["lat"] = results[0].geometry.location.lat;
                         newLocation["lng"] = results[0].geometry.location.lng;
                         postLocation(newLocation)
-                      } else {
+                      } else if (status == "OVER_QUERY_LIMIT"){
+                        console.log("I tried to save it too fast and got an error...");
+                      } else if (status == "ZERO_RESULTS"){
                         console.log("I couldn't find this address: " + newLocation.address);
+                      } else {
+                        console.log("Sorry, random error with this address: " + newLocation.address);
                       }
                     })
                   } else {
                     postLocation(newLocation)
                   }
-                }, 200 * location_index)
+                }, 300 * location_index)
               })
             },
             error: function(e) {

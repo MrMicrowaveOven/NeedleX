@@ -20,8 +20,6 @@
       }
       var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-
-      geocoder = new google.maps.Geocoder();
       $.get("/locations", function(data) {
         console.log(data);
         data.forEach(function(location) {
@@ -38,8 +36,8 @@
                 // icon: image
               });
 
-              var contentString = (location.day || "") + "<br>" + (location.time || "") + "<br>" + (location.name || "") + "<br>" + location.address + "<br>" + location.description
-                + "<br>" + location.link + "<br>" + (location.phoneNumber || "")
+              var contentString = (location.name || "") + "<br>" + location.address + "<br>" + location.description
+                + "<br>" + (location.link + "<br>" || "") + (location.phoneNumber || "") + "<br>" + (location.day || "") + "<br>" + (location.time || "") + "<br>"
 
               var infowindow = new google.maps.InfoWindow({
                 content: contentString
