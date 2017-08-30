@@ -31,7 +31,9 @@
         dayDiv.index = day_index;
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(dayDiv);
       })
-
+      addMarkers(map);
+    }
+    function addMarkers(map) {
       $.get("/locations", function(data) {
         console.log(data);
         data.forEach(function(location) {
@@ -67,8 +69,8 @@
             infowindow.close();
           });
         });
-        })
-      }
+      })
+    }
 
       // Include Google Maps script with env variables
       var GOOGLE_API_KEY = $.get("/welcome/1", function(googleApiKey) {
