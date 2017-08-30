@@ -21,9 +21,12 @@
       var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
 // Add day filter buttons at top of screen
+      dayOfWeekInt = new Date().getDay();
+      var selected;
       ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].forEach(function(day, day_index) {
         var dayDiv = document.createElement('div');
-        var dayControl = new DayButton(dayDiv, map, day);
+        selected = day_index == dayOfWeekInt
+        var dayControl = new DayButton(dayDiv, map, day, selected);
 
         dayDiv.index = day_index;
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(dayDiv);
@@ -76,10 +79,10 @@
       })
 
 // DayButton Constructor
-      function DayButton(controlDiv, map, day) {
+      function DayButton(controlDiv, map, day, selected) {
         // Set CSS for the control border.
         var controlUI = document.createElement('div');
-        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.backgroundColor = selected ? "darkgray" : '#fff';
         controlUI.style.border = '2px solid #fff';
         controlUI.style.borderRadius = '3px';
         controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
