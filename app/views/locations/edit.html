@@ -10,14 +10,21 @@
     <!-- <div class="" id="table"> -->
       <table id="table">
         <tr>
-          <th>Day</th>
-          <th>DayString</th>
-          <th>Time</th>
+          <!-- <th>Day</th> -->
+          <!-- <th>DayString</th> -->
+          <!-- <th>Time</th> -->
           <th>Name</th>
           <th>Address</th>
           <th>Description</th>
           <th>Link</th>
           <th>Phone Number</th>
+          <th>Sunday</th>
+          <th>Monday</th>
+          <th>Tuesday</th>
+          <th>Wednesday</th>
+          <th>Thursday</th>
+          <th>Friday</th>
+          <th>Saturday</th>
         </tr>
       </table>
     <!-- </div> -->
@@ -25,10 +32,11 @@
     <button type="button" name="button" onclick="saveData()">Save Data</button>
     <script type="text/javascript">
       function addRow(data) {
+        console.log(data);
         data = data || {
-          day: "",
-          day_string: "",
-          time: "",
+          // day: "",
+          // day_string: "",
+          // time: "",
           name: "",
           address: "",
           description: "",
@@ -37,14 +45,21 @@
         }
         $("table").append(
           "<tr class='rowOfData'><td>"
-            + data.day + "</td><td>"
-            + data.day_string + "</td><td>"
-            + data.time + "</td><td>"
+            // + data.day + "</td><td>"
+            // + data.day_string + "</td><td>"
+            // + data.time + "</td><td>"
             + data.name + "</td><td>"
             + data.address + "</td><td>"
             + data.description + "</td><td>"
             + data.link + "</td><td>"
-            + data.phone_number + "</td></tr>"
+            + data.phone_number + "</td><td>"
+            + "</td><td>"
+            + "</td><td>"
+            + "</td><td>"
+            + "</td><td>"
+            + "</td><td>"
+            + "</td><td>"
+            + "</td></tr>"
         )
         // makeEditable()
         $('table').editableTableWidget();
@@ -77,14 +92,22 @@
         var location = {};
         $(".rowOfData").each(function(index, row) {
           location = {};
-          location["day"] = row.cells[0].innerHTML;
-          location["day_string"] = row.cells[1].innerHTML;
-          location["time"] = row.cells[2].innerHTML;
-          location["name"] = row.cells[3].innerHTML;
-          location["address"] = row.cells[4].innerHTML;
-          location["description"] = row.cells[5].innerHTML;
-          location["link"] = row.cells[6].innerHTML;
-          location["phone_number"] = row.cells[7].innerHTML;
+          // location["day"] = row.cells[0].innerHTML;
+          // location["day_string"] = row.cells[1].innerHTML;
+          // location["time"] = row.cells[2].innerHTML;
+          location["name"] = row.cells[0].innerHTML;
+          location["address"] = row.cells[1].innerHTML;
+          location["description"] = row.cells[2].innerHTML;
+          location["link"] = row.cells[3].innerHTML;
+          location["phone_number"] = row.cells[4].innerHTML;
+          location["sunday"] = row.cells[5].innerHTML;
+          location["monday"] = row.cells[6].innerHTML;
+          location["tuesday"] = row.cells[7].innerHTML;
+          location["wednesday"] = row.cells[8].innerHTML;
+          location["thursday"] = row.cells[9].innerHTML;
+          location["friday"] = row.cells[10].innerHTML;
+          location["saturday"] = row.cells[11].innerHTML;
+
           locations.push(location)
         })
         return locations
