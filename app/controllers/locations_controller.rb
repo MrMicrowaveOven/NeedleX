@@ -11,6 +11,9 @@ class LocationsController < ApplicationController
   end
 
   def destroy
+    Availability.all.each do |availability|
+      availability.destroy
+    end
     Location.all.each do |location|
       location.destroy
     end
@@ -35,16 +38,19 @@ class LocationsController < ApplicationController
     if @location.save
       [:sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday].each_with_index do |day, day_index|
         # p "MONDAY WOOOOOOORKING" if params["monday"]
-        if !params[:location][day].empty?
+        if params[:location][day] && params[:location][day] != "undefined" && !params[:location][day].empty?
           p "Yo, day is vallllllllllllllid!!!"
+          p params[:location]
+          p day
           p params[:location][day]
           hours = params[:location][day]
-          opening_string = hours.match(/\d{1,2}(:(\d{1,2}))([ap]m)/)
-          closing_hour = hours.slice(hours.index("-"), hours.length)
+          # opening_string = hours.match(/\d{1,2}(:(\d{1,2}))([ap]m)/)
+          opening_time = hours.slice(0, hours.index(","))
+          closing_time = hours.slice(hours.index(","), hours.length)
           # TODO: Error handling for hours input
-          closing_string = closing_hour.match(/\d{1,2}(:(\d{1,2}))([ap]m)/)
-          opening = Time.parse(opening_string[0])
-          closing = Time.parse(closing_string[0])
+          # closing_string = closing_hour.match(/\d{1,2}(:(\d{1,2}))([ap]m)/)
+          opening = Time.parse(opening_time)
+          closing = Time.parse(closing_time)
           new_availability = Availability.new(
             {
               location_id: @location[:id],
