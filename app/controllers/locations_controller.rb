@@ -21,9 +21,13 @@ class LocationsController < ApplicationController
 
   def update
     # Delete all current locations
+    Availability.all.each do |availability|
+      availability.destroy
+    end
     Location.all.each do |location|
       location.destroy
     end
+
     new_locations = []
     default_spreadsheet.each do |location|
       new_location = Location.new(location)
