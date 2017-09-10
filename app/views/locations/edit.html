@@ -32,27 +32,29 @@
     <button type="button" name="button" onclick="saveData()">Save Data</button>
     <script type="text/javascript">
       function addRow(data) {
-        console.log(data);
         data = data || {
-          // day: "",
-          // day_string: "",
-          // time: "",
           name: "",
           address: "",
           description: "",
           link: "",
           phoneNumber: "",
         }
+        // For some unknown reason, the code below doesn't run without this console.log
+        console.log();
+        ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"].forEach(function(day) {
+          if (!data[day] || data[day] == "undefined") {
+            data[day] = ""
+          }
+        })
 
         $.get("/availabilities", function(availabilities) {
-          console.log(availabilities);
+          // console.log(availabilities);
           availabilities.forEach(function(availability) {
             if (availability.location_id === data.id) {
-              console.log(availability);
+              // console.log(availability);
               data[["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"][availability.day_of_week]] = availability.opening + "," + availability.closing
             }
           })
-          console.log(data);
           $("table").append(
             "<tr class='rowOfData'><td>"
             + data.name + "</td><td>"
