@@ -13,6 +13,7 @@
           <!-- <th>Day</th> -->
           <!-- <th>DayString</th> -->
           <!-- <th>Time</th> -->
+          <th></th>
           <th>Name</th>
           <th>Address</th>
           <th>Description</th>
@@ -52,11 +53,21 @@
           availabilities.forEach(function(availability) {
             if (availability.location_id === data.id) {
               // console.log(availability);
-              data[["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"][availability.day_of_week]] = availability.opening + "," + availability.closing
+              openingTime = new Date(availability.opening);
+              openingHour = openingTime.getHours().toString();
+              openingMinutes = openingTime.getMinutes().toString();
+              openingMinutes = openingMinutes.length < 2 ? openingMinutes = "0" + openingMinutes : openingMinutes = openingMinutes
+
+              closingTime = new Date(availability.closing)
+              closingHour = closingTime.getHours().toString();
+              closingMinutes = closingTime.getMinutes().toString();
+              closingMinutes = closingMinutes.length < 2 ? closingMinutes = "0" + closingMinutes : closingMinutes = closingMinutes
+              data[["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"][availability.day_of_week]] = openingHour + ":" + openingMinutes + "," + closingHour + ":" + openingMinutes;
             }
           })
           $("table").append(
             "<tr class='rowOfData'><td>"
+            + $("table tbody tr").length + "</td><td>"
             + data.name + "</td><td>"
             + data.address + "</td><td>"
             + data.description + "</td><td>"
@@ -103,21 +114,18 @@
         var location = {};
         $(".rowOfData").each(function(index, row) {
           location = {};
-          // location["day"] = row.cells[0].innerHTML;
-          // location["day_string"] = row.cells[1].innerHTML;
-          // location["time"] = row.cells[2].innerHTML;
-          location["name"] = row.cells[0].innerHTML;
-          location["address"] = row.cells[1].innerHTML;
-          location["description"] = row.cells[2].innerHTML;
-          location["link"] = row.cells[3].innerHTML;
-          location["phone_number"] = row.cells[4].innerHTML;
-          location["sunday"] = row.cells[5].innerHTML;
-          location["monday"] = row.cells[6].innerHTML;
-          location["tuesday"] = row.cells[7].innerHTML;
-          location["wednesday"] = row.cells[8].innerHTML;
-          location["thursday"] = row.cells[9].innerHTML;
-          location["friday"] = row.cells[10].innerHTML;
-          location["saturday"] = row.cells[11].innerHTML;
+          location["name"] = row.cells[1].innerHTML;
+          location["address"] = row.cells[2].innerHTML;
+          location["description"] = row.cells[3].innerHTML;
+          location["link"] = row.cells[4].innerHTML;
+          location["phone_number"] = row.cells[5].innerHTML;
+          location["sunday"] = row.cells[6].innerHTML;
+          location["monday"] = row.cells[7].innerHTML;
+          location["tuesday"] = row.cells[8].innerHTML;
+          location["wednesday"] = row.cells[9].innerHTML;
+          location["thursday"] = row.cells[10].innerHTML;
+          location["friday"] = row.cells[11].innerHTML;
+          location["saturday"] = row.cells[12].innerHTML;
 
           locations.push(location)
         })
