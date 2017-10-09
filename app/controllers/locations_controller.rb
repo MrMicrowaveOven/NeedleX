@@ -3,7 +3,29 @@ require 'Time'
 class LocationsController < ApplicationController
   skip_before_action :verify_authenticity_token
   def index
-    render json: Location.all
+    # Location.includes(:availabilities)
+    locations = Location.includes(:availabilities)
+    all_locations = []
+    locations.each do |location|
+      all_locations << {
+        id: location.id,
+        name: location.name,
+        address: location.address,
+        description: location.description,
+        link: location.link,
+        phone_number: location.phone_number,
+        created_at: location.created_at,
+        updated_at: location.updated_at,
+        day: location.day,
+        time: location.time,
+        lat: location.lat,
+        lng: location.lng,
+        day_string: location.day_string,
+        availabilities: location.availabilities,
+      }
+    end
+    # locations = locations.to_json
+    render json: all_locations
   end
 
   def edit
