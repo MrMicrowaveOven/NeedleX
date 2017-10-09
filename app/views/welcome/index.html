@@ -10,6 +10,7 @@
 
     </div>
     <script type="text/javascript">
+    DAYSOFWEEK = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     function makeMap(lat, lng) {
       lat = lat || 37.765
       lng = lng || -122.42
@@ -56,7 +57,19 @@
           location.link ? contentString += location.link + "<br>" : 0;
           location.phone_number ? contentString += location.phone_number + "<br>" : 0;
           contentString += "<strong>Hours:</strong><br>"
-          contentString += location.day + "<br>" + location.time + "<br>";
+          location.availabilities.forEach(function(availability) {
+            var opening = new Date(availability.opening)
+            var openingHour = opening.getHours()
+            var openingMinutes = (opening.getMinutes() + "").length < 2 ? "0" + opening.getMinutes() : opening.getMinutes();
+            var openingTimeString = openingHour + ":" + openingMinutes
+
+            var closing = new Date(availability.closing)
+            var closingHour = closing.getHours()
+            var closingMinutes = (closing.getMinutes() + "").length < 2 ? "0" + closing.getMinutes() : closing.getMinutes();
+            var closingTimeString = closingHour + ":" + closingMinutes
+
+            contentString += DAYSOFWEEK[availability.day_of_week] + ": " + openingTimeString + "-" + closingTimeString + "<br>";
+          })
 
           var infowindow = new google.maps.InfoWindow({
             content: contentString
