@@ -9,9 +9,8 @@ gem 'dotenv-rails', groups: [:development, :test]
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.3'
 # Use pg as the database for Active Record
-gem 'pg'
-# , groups: [:production]
-# gem 'sqlite3', groups: [:development, :test]
+gem 'pg', groups: [:production]
+gem 'sqlite3', groups: [:development, :test]
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
@@ -54,5 +53,3 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'rb-inotify'
-# , :require => linux_only('rb-inotify')
