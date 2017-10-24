@@ -24,7 +24,6 @@ class LocationsController < ApplicationController
         availabilities: location.availabilities,
       }
     end
-    # locations = locations.to_json
     render json: all_locations
   end
 
@@ -63,12 +62,11 @@ class LocationsController < ApplicationController
     @location = Location.new(location_params)
     if @location.save
       [:sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday].each_with_index do |day, day_index|
-        # p "MONDAY WOOOOOOORKING" if params["monday"]
         if params[:location][day] && params[:location][day] != "undefined" && !params[:location][day].empty?
-          p "Yo, day is vallllllllllllllid!!!"
-          p params[:location]
-          p day
-          p params[:location][day]
+          # p "Yo, day is vallllllllllllllid!!!"
+          # p params[:location]
+          # p day
+          # p params[:location][day]
           hours = params[:location][day]
           # opening_string = hours.match(/\d{1,2}(:(\d{1,2}))([ap]m)/)
           opening_time = hours.slice(0, hours.index(","))
@@ -89,8 +87,8 @@ class LocationsController < ApplicationController
       end
       render json: @location
     else
-      p "==============================="
-      p "failure to save location"
+      # p "==============================="
+      # p "failure to save location"
       render json: {failure: "location_save_error"}
     end
   end
