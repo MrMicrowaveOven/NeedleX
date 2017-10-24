@@ -24,7 +24,6 @@ class LocationsController < ApplicationController
         availabilities: location.availabilities,
       }
     end
-    # locations = locations.to_json
     render json: all_locations
   end
 

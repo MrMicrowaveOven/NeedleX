@@ -51,8 +51,20 @@ class LocationsControllerTest < ActionDispatch::IntegrationTest
     end
   end
   class LocationsGetTest < ActionDispatch::IntegrationTest
-    test "gives all locations and availabilities" do
-      
+    test "gives all locations" do
+      get locations_url
+      control = JSON.parse(response.body).length
+      create(:location)
+      get locations_url
+      assert_equal control + 1, JSON.parse(response.body).length
+    end
+    test "gives all availabilities for locations" do
+      location_with_avails = create(:location_with_avail)
+      get locations_url
+      assert_equal 1, JSON.parse(response.body).last["availabilities"].length
+      create(:availability, location: location_with_avails)
+      get locations_url
+      assert_equal 2, JSON.parse(response.body).last["availabilities"].length
     end
   end
 end
