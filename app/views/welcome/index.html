@@ -11,6 +11,10 @@
     </div>
     <script type="text/javascript">
     DAYSOFWEEK = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    dayButtons = [];
+    markers = [];
+    infoWindows = [];
+
     function makeMap(lat, lng) {
       lat = lat || 37.765
       lng = lng || -122.42
@@ -34,16 +38,26 @@
       })
       addMarkers(map);
     }
-    markers = [];
+
     function hideAllMarkers() {
       markers.forEach(function(marker) {
         marker.setVisible(false);
       })
     }
+
+    function showApplicableMarkers() {
+      markers.forEach(function(marker, locationIndex) {
+        for (var i = 0; i < 7; i++) {
+          if (dayButtons[i].style.backgroundColor == "darkgray" && infoWindows[locationIndex][i]) {
+            marker.setVisible(true)
+          }
+        }
+      })
+    }
     function addMarkers(map) {
       $.get("/locations", function(data) {
         console.log(data);
-        data.forEach(function(location) {
+        data.forEach(function(location, locationIndex) {
           // map.setCenter(results[0].geometry.location);
           var image = {
             url: "https://68.media.tumblr.com/08815ef78ff0dc07bf671d7dc25f2428/tumblr_ovgx0j0zXk1v497yzo1_75sq.png",
@@ -63,6 +77,8 @@
           location.link ? contentString += location.link + "<br>" : 0;
           location.phone_number ? contentString += location.phone_number + "<br>" : 0;
           contentString += "<strong>Hours:</strong><br>"
+          infoWindows.push({})
+
           location.availabilities.forEach(function(availability) {
             var opening = new Date(availability.opening)
             var openingHour = opening.getHours()
@@ -75,6 +91,8 @@
             var closingTimeString = closingHour + ":" + closingMinutes
 
             contentString += DAYSOFWEEK[availability.day_of_week] + ": " + openingTimeString + "-" + closingTimeString + "<br>";
+
+            infoWindows[locationIndex][availability.day_of_week] = true;
           })
 
           var infowindow = new google.maps.InfoWindow({
@@ -129,7 +147,10 @@
         controlUI.addEventListener('click', function() {
           var currentColor = controlUI.style.backgroundColor
           controlUI.style.backgroundColor = currentColor == "rgb(255, 255, 255)" ? "darkgray" : "rgb(255, 255, 255)";
+          hideAllMarkers()
+          showApplicableMarkers()
         });
+        dayButtons.push(controlUI)
       }
     </script>
     <style media="screen">
