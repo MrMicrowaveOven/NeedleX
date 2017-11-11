@@ -24,15 +24,21 @@
 // Add day filter buttons at top of screen
       dayOfWeekInt = new Date().getDay();
       var selected;
-      ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].forEach(function(day, day_index) {
+      ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].forEach(function(day, dayIndex) {
         var dayDiv = document.createElement('div');
-        selected = day_index == dayOfWeekInt
+        selected = dayIndex == dayOfWeekInt
         var dayControl = new DayButton(dayDiv, map, day, selected);
 
-        dayDiv.index = day_index;
+        dayDiv.index = dayIndex;
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(dayDiv);
       })
       addMarkers(map);
+    }
+    markers = [];
+    function hideAllMarkers() {
+      markers.forEach(function(marker) {
+        marker.setVisible(false);
+      })
     }
     function addMarkers(map) {
       $.get("/locations", function(data) {
@@ -81,6 +87,7 @@
           map.addListener('click', function() {
             infowindow.close();
           });
+          markers.push(marker)
         });
       })
     }
