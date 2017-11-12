@@ -38,6 +38,7 @@ class LocationsController < ApplicationController
     Location.all.each do |location|
       location.destroy
     end
+    render json: {locations: "Deleted successfully", please_wait: "Update in progress"}
   end
 
   def update
@@ -110,7 +111,7 @@ class LocationsController < ApplicationController
 
     end
 
-    render json: {location: "Success!"}
+    render json: {locations: "Successfully updated!  Please reload the page to see the update."}
     # @location = Location.new(location_params)
     # if @location.save
     #   [:sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday].each_with_index do |day, day_index|

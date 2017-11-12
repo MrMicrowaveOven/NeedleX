@@ -33,9 +33,19 @@
     <button type="button" name="button" onclick="saveData()">Save Data</button>
     <script type="text/javascript">
       function updateFromSpreadsheet() {
+        $.ajax({
+          url: "/locations/1",
+          type: "DELETE",
+          success: function(response) {
+            console.log(response);
+          },
+          error: function(response) {
+            console.log(response)
+          }
+        })
+
         $.post("/locations", function(response) {
           console.log(response);
-          // location.reload();
         })
       }
       function addRow(data) {
