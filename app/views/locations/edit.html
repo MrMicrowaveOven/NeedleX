@@ -168,57 +168,58 @@
       }
 
       function saveData() {
-        newLocations = getFormData()
-        getDatabaseLocations.then(function(oldLocations) {
-          setLatAndLngForExistingLocations(newLocations, oldLocations)
-          $.ajax({
-            // contentType: "application/json",
-            type: "DELETE",
-            url: "/locations/1",
-            // data: location,
-            success: function(res) {
-              // console.log(res);
+        // Get locations from form
+        // Get lats and lngs for each location
+        // Save the new locations
 
 
-              // $.ajax({
-              //   type: "DELETE",
-              //   url: "/availabilities/1",
-              //   success: function(avails) {
-
-                  geocoder = new google.maps.Geocoder();
-                  newLocations.forEach(function(newLocation, location_index) {
-                    setTimeout(function() {
-                      if (!newLocation["lat"] || !newLocation["lng"]) {
-                        console.log("GEOLOCATING");
-                        // console.log(location);
-                        geocoder.geocode( { 'address': newLocation.address}, function(results, status) {
-                          console.log(status);
-                          if (status == "OK") {
-                            newLocation["lat"] = results[0].geometry.location.lat;
-                            newLocation["lng"] = results[0].geometry.location.lng;
-                            postLocation(newLocation)
-                          } else if (status == "OVER_QUERY_LIMIT"){
-                            console.log("I tried to save it too fast and got an error...");
-                          } else if (status == "ZERO_RESULTS"){
-                            console.log("I couldn't find this address: " + newLocation.address);
-                          } else {
-                            console.log("Sorry, random error with this address: " + newLocation.address);
-                          }
-                        })
-                      } else {
-                        postLocation(newLocation)
-                      }
-                    }, 1000 * location_index)
-                  })
-                // }
-              // })
-
-
-            },
-            error: function(e) {
-              console.log(e);
-            }
-          })
+        // newLocations = getFormData()
+        getDatabaseLocations.then(function(newLocations) {
+          // setLatAndLngForExistingLocations(newLocations, oldLocations)
+          console.log(newLocations);
+          geocoder = new google.maps.Geocoder();
+          newLocations.forEach(function(newLocation, location_index) {
+            setTimeout(function() {
+              if (!newLocation["lat"] || !newLocation["lng"]) {
+                console.log("GEOLOCATING");
+                  // console.log(location);
+                geocoder.geocode( { 'address': newLocation.address}, function(results, status) {
+                  console.log(status);
+                  if (status == "OK") {
+                    // newLocation["lat"] = results[0].geometry.location.lat;
+                    // newLocation["lng"] = results[0].geometry.location.lng;
+                    // postLocation(newLocation)
+                    updateLocation({
+                      id: newLocation.id,
+                      lat: results[0].geometry.location.lat,
+                      lng: results[0].geometry.location.lng
+                    })
+                  } else if (status == "OVER_QUERY_LIMIT"){
+                    console.log("I tried to save it too fast and got an error...");
+                  } else if (status == "ZERO_RESULTS"){
+                    console.log("I couldn't find this address: " + newLocation.address);
+                  } else {
+                    console.log("Sorry, random error with this address: " + newLocation.address);
+                  }
+                })
+                } else {
+                  // postLocation(newLocation)
+                }
+              }, 1000 * location_index)
+            })
+        })
+      }
+      function updateLocation(location) {
+        $.ajax({
+          type: "PATCH",
+          url: "/locations/" + location.id,
+          data: location,
+          success: function(res) {
+            console.log(res);
+          },
+          error: function(res) {
+            console.log(res);
+          }
         })
       }
       function postLocation(location) {
