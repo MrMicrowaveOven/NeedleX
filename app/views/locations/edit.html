@@ -7,6 +7,8 @@
 
   </head>
   <body>
+    <button type="button" name="button" onclick="updateFromSpreadsheet()">Update Data from Spreadsheet</button>
+    <button type="button" name="button" onclick="saveData()">Save Data</button>
     <!-- <div class="" id="table"> -->
       <table id="table">
         <tr>
@@ -29,8 +31,6 @@
         </tr>
       </table>
     <!-- </div> -->
-    <button type="button" name="button" onclick="updateFromSpreadsheet()">Update Data from Spreadsheet</button>
-    <button type="button" name="button" onclick="saveData()">Save Data</button>
     <script type="text/javascript">
       function updateFromSpreadsheet() {
         $.ajax({
