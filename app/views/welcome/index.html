@@ -71,11 +71,23 @@
             icon: image
           });
 
-          var contentString = "<h3>" + location.name + "</h3>" + location.address + "<br>";
+          if(location.phone_number) {
+            var firstThreeDigits = location.phone_number.slice(0,3)
+            var secondThreeDigits = location.phone_number.slice(3,6)
+            var lastFourDigits = location.phone_number.slice(6,10)
+            var phone_number = "(" + firstThreeDigits + ") " + secondThreeDigits + "-" + lastFourDigits;
+          } else {
+            var phone_number = "";
+          }
 
+          var contentString = "<h3>" + location.name + "</h3>" + location.address.split(",")[0] + "<br>";
+
+          secondHalfOfAddress = location.address.split(",")
+          secondHalfOfAddress.shift()
+          contentString += secondHalfOfAddress.join() + "<br>";
           location.description ? contentString += location.description + "<br>" : 0;
           location.link ? contentString += location.link + "<br>" : 0;
-          location.phone_number ? contentString += location.phone_number + "<br>" : 0;
+          contentString += phone_number + "<br><br>";
           contentString += "<strong>Hours:</strong><br>"
           infoWindows.push({})
 
