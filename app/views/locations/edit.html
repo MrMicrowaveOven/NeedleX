@@ -38,15 +38,15 @@
           type: "DELETE",
           success: function(response) {
             console.log(response);
+            $.post("/locations", function(response) {
+              console.log(response);
+            })
           },
           error: function(response) {
             console.log(response)
           }
         })
 
-        $.post("/locations", function(response) {
-          console.log(response);
-        })
       }
       function addRow(data) {
         data = data || {
