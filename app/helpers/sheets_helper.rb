@@ -10,7 +10,7 @@ module SheetsHelper
 
     config_struct = StringIO.new({
       client_email: ENV['gd_client_email'],
-      private_key: ENV['gd_private_key'],
+      private_key: ENV['gd_private_key'].gsub(/\\n/, '\n'),
       # Called for in the docs, but seemingly unnecesary.
       # type: ENV['gd_type'],
       # project_id: ENV['gd_project_id'],
