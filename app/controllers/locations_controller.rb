@@ -3,7 +3,6 @@ require 'time'
 class LocationsController < ApplicationController
   skip_before_action :verify_authenticity_token
   def index
-    # Location.includes(:availabilities)
     locations = Location.includes(:availabilities)
     all_locations = []
     locations.each do |location|
@@ -27,10 +26,6 @@ class LocationsController < ApplicationController
     render json: all_locations
   end
 
-  def edit
-
-  end
-
   def destroy
     Availability.all.each do |availability|
       availability.destroy
@@ -52,49 +47,11 @@ class LocationsController < ApplicationController
     end
   end
 
-  # def update
-
-    # @location = Location.new(location_params)
-    # if @location.save
-    #   [:sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday].each_with_index do |day, day_index|
-    #     if params[:location][day] && params[:location][day] != "undefined" && !params[:location][day].empty?
-    #       # p "Yo, day is vallllllllllllllid!!!"
-    #       # p params[:location]
-    #       # p day
-    #       # p params[:location][day]
-    #       hours = params[:location][day]
-    #       # opening_string = hours.match(/\d{1,2}(:(\d{1,2}))([ap]m)/)
-    #       opening_time = hours.slice(0, hours.index(","))
-    #       closing_time = hours.slice(hours.index(","), hours.length)
-    #       # TODO: Error handling for hours input
-    #       # closing_string = closing_hour.match(/\d{1,2}(:(\d{1,2}))([ap]m)/)
-    #       opening = Time.parse(opening_time)
-    #       closing = Time.parse(closing_time)
-    #       new_availability = Availability.new(
-    #         {
-    #           location_id: @location[:id],
-    #           day_of_week: day_index,
-    #           opening: opening,
-    #           closing: closing
-    #         }
-    #       )
-    #       new_availability.save!
-    #     end
-    #   end
-    #   render json: @location
-    # else
-    #   # p "==============================="
-    #   # p "failure to save location"
-    #   render json: {failure: "location_save_error"}
-    # end
-  # end
-
-
-
   def create
     ws = SheetsHelper.get_sheet_data
     rows = []
 
+    # ws is array-like.  rows will be an actual array.
     (2..ws.num_rows).each do |row|
       rows << []
       (1..ws.num_cols).each do |col|
