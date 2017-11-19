@@ -186,9 +186,6 @@
                 geocoder.geocode( { 'address': newLocation.address}, function(results, status) {
                   console.log(status);
                   if (status == "OK") {
-                    // newLocation["lat"] = results[0].geometry.location.lat;
-                    // newLocation["lng"] = results[0].geometry.location.lng;
-                    // postLocation(newLocation)
                     updateLocation({
                       id: newLocation.id,
                       lat: results[0].geometry.location.lat,
