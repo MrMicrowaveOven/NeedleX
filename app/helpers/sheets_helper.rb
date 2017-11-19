@@ -8,9 +8,12 @@ module SheetsHelper
     # See this document to learn how to create config.json:
     # https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
 
+    p ENV['gd_private_key']
+    p ENV['gd_private_key'].gsub(/\\n/, "\n")
+
     config_struct = StringIO.new({
       client_email: ENV['gd_client_email'],
-      private_key: ENV['gd_private_key'].gsub(/\\n/, '\n'),
+      private_key: ENV['gd_private_key'].gsub(/\\n/, "\n"),
       # Called for in the docs, but seemingly unnecesary.
       # type: ENV['gd_type'],
       # project_id: ENV['gd_project_id'],
