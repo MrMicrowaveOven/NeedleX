@@ -103,14 +103,20 @@
           contentString += "<strong>Hours:</strong><br>"
           infoWindows.push({})
 
+          var zeroHour = "2000-01-01T08:00:00.000Z";
           location.availabilities.forEach(function(availability) {
-            var opening = new Date(availability.opening)
-            var openingTimeString = formatAMPM(opening);
+            if (availability.opening == zeroHour  && availability.closing == zeroHour) {
+              contentString += DAYSOFWEEK[availability.day_of_week] + ": 24 hours<br>";
+            } else {
+              var opening = new Date(availability.opening)
+              var openingTimeString = formatAMPM(opening);
 
-            var closing = new Date(availability.closing)
-            var closingTimeString = formatAMPM(closing);
+              var closing = new Date(availability.closing)
+              var closingTimeString = formatAMPM(closing);
 
-            contentString += DAYSOFWEEK[availability.day_of_week] + ": " + openingTimeString + "-" + closingTimeString + "<br>";
+              contentString += DAYSOFWEEK[availability.day_of_week] + ": " + openingTimeString + "-" + closingTimeString + "<br>";
+            }
+
 
             infoWindows[locationIndex][availability.day_of_week] = true;
           })
