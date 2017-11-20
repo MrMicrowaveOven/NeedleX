@@ -54,6 +54,18 @@
         }
       })
     }
+
+    function formatAMPM(date) {
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0'+minutes : minutes;
+      var strTime = hours + ':' + minutes + ampm;
+      return strTime;
+    }
+
     function addMarkers(map) {
       $.get("/locations", function(data) {
         console.log(data);
@@ -93,14 +105,10 @@
 
           location.availabilities.forEach(function(availability) {
             var opening = new Date(availability.opening)
-            var openingHour = opening.getHours()
-            var openingMinutes = (opening.getMinutes() + "").length < 2 ? "0" + opening.getMinutes() : opening.getMinutes();
-            var openingTimeString = openingHour + ":" + openingMinutes
+            var openingTimeString = formatAMPM(opening);
 
             var closing = new Date(availability.closing)
-            var closingHour = closing.getHours()
-            var closingMinutes = (closing.getMinutes() + "").length < 2 ? "0" + closing.getMinutes() : closing.getMinutes();
-            var closingTimeString = closingHour + ":" + closingMinutes
+            var closingTimeString = formatAMPM(closing);
 
             contentString += DAYSOFWEEK[availability.day_of_week] + ": " + openingTimeString + "-" + closingTimeString + "<br>";
 
