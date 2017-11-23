@@ -80,8 +80,8 @@ class LocationsController < ApplicationController
         day_of_week = (col - 9) / 2
         availability = Availability.new({
           location_id: location.id,
-          opening: Time.new(2000, 1, 1, opening_time / 100, opening_time % 100),
-          closing: Time.new(2000, 1, 1, closing_time / 100, closing_time % 100),
+          opening: Time.local(2000, 1, 1, opening_time / 100, opening_time % 100),
+          closing: Time.local(2000, 1, 1, closing_time / 100, closing_time % 100),
           day_of_week: day_of_week
         })
         unless availability.save
