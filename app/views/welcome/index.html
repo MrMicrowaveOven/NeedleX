@@ -98,9 +98,9 @@
           secondHalfOfAddress.shift()
           contentString += secondHalfOfAddress.join() + "<br>";
           location.description ? contentString += location.description + "<br>" : 0;
-          location.link ? contentString += location.link + "<br>" : 0;
+          location.link ? contentString += '<a href="' + location.link + '" target="_blank">Website</a>' + "<br>" : 0;
           contentString += phone_number + "<br><br>";
-          contentString += "<strong>Hours:</strong><br>"
+          contentString += "<strong>Hours:</strong><br>";
           infoWindows.push({})
 
           // Consider cycling through the DAYSOFWEEK here, so Closed days will be easier.
