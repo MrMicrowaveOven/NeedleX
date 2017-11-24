@@ -88,8 +88,10 @@
             var secondThreeDigits = location.phone_number.slice(3,6)
             var lastFourDigits = location.phone_number.slice(6,10)
             var phone_number = "(" + firstThreeDigits + ") " + secondThreeDigits + "-" + lastFourDigits;
+
+            var phone_number_link = '<a href="tel:+1-' + firstThreeDigits + "-" + secondThreeDigits + "-" + lastFourDigits + '">' + phone_number + '</a>'
           } else {
-            var phone_number = "";
+            var phone_number_link = "";
           }
 
           var contentString = "<h3>" + location.name + "</h3>" + location.address.split(",")[0] + "<br>";
@@ -99,7 +101,7 @@
           contentString += secondHalfOfAddress.join() + "<br>";
           location.description ? contentString += location.description + "<br>" : 0;
           location.link ? contentString += '<a href="' + location.link + '" target="_blank">Website</a>' + "<br>" : 0;
-          contentString += phone_number + "<br><br>";
+          contentString += phone_number_link + "<br><br>";
           contentString += "<strong>Hours:</strong><br>";
           infoWindows.push({})
 
