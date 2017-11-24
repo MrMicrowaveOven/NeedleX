@@ -14,12 +14,13 @@ module SheetsHelper
     worksheets.each do |worksheet|
       next if worksheet[1,1].blank?
       rows = [];
-      (2..worksheet.num_rows).each_with_index do |row, row_index|
-        break if worksheet[row_index + 1, 1].blank?
-        rows << []
+      (2..worksheet.num_rows).each_with_index do |row|
+        break if worksheet[row, 1].blank?
+        new_row = []
         (1..worksheet.num_cols).each do |col|
-          rows.last << worksheet[row, col]
+          new_row << worksheet[row, col]
         end
+        rows << new_row
       end
       worksheets_array += rows
     end

@@ -178,13 +178,11 @@
           // setLatAndLngForExistingLocations(newLocations, oldLocations)
           console.log(newLocations);
           geocoder = new google.maps.Geocoder();
+          console.group('Sucesses')
           newLocations.forEach(function(newLocation, location_index) {
             setTimeout(function() {
               if (!newLocation["lat"] || !newLocation["lng"]) {
-                console.log("GEOLOCATING");
-                  // console.log(location);
                 geocoder.geocode( { 'address': newLocation.address}, function(results, status) {
-                  console.log(status);
                   if (status == "OK") {
                     updateLocation({
                       id: newLocation.id,
@@ -192,11 +190,17 @@
                       lng: results[0].geometry.location.lng
                     })
                   } else if (status == "OVER_QUERY_LIMIT"){
+                    console.groupEnd()
                     console.log("I tried to save it too fast and got an error...");
+                    console.group('Sucesses')
                   } else if (status == "ZERO_RESULTS"){
+                    console.groupEnd()
                     console.log("I couldn't find this address: " + newLocation.address);
+                    console.group('Sucesses')
                   } else {
+                    console.groupEnd()
                     console.log("Sorry, random error with this address: " + newLocation.address);
+                    console.group('Sucesses')
                   }
                 })
                 } else {
@@ -212,10 +216,14 @@
           url: "/locations/" + location.id,
           data: location,
           success: function(res) {
-            console.log(res);
+            if (res.locationSave == "Success!") {
+              console.log(new Object({"updated": "Success!"}));
+            }
           },
           error: function(res) {
+            console.groupEnd()
             console.log(res);
+            console.group('Sucesses')
           }
         })
       }

@@ -49,15 +49,6 @@ class LocationsController < ApplicationController
 
   def create
     rows = SheetsHelper.get_sheet_data
-    # rows = []
-    #
-    # ws is array-like.  rows will be an actual array.
-    # (2..ws.num_rows).each do |row|
-    #   rows << []
-    #   (1..ws.num_cols).each do |col|
-    #     rows.last << ws[row, col]
-    #   end
-    # end
 
     rows.each_with_index do |row, index|
       location = Location.new({
