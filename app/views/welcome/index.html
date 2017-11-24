@@ -121,6 +121,10 @@
             infoWindows[locationIndex][availability.day_of_week] = true;
           })
 
+
+          var gMapsLinkBase = "https://www.google.com/maps/place/" + location.address.split("+");
+          contentString += '<br><a href="' + gMapsLinkBase + '" target="_blank">View on Google Maps</a><br>';
+
           var infowindow = new google.maps.InfoWindow({
             content: contentString
           });
