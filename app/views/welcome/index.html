@@ -14,6 +14,7 @@
     dayButtons = [];
     markers = [];
     infoWindows = [];
+    infoWindowsAvailabilities = [];
 
     function makeMap(lat, lng) {
       lat = lat || 37.765
@@ -43,12 +44,15 @@
       markers.forEach(function(marker) {
         marker.setVisible(false);
       })
+      infoWindows.forEach(function(infoWindow) {
+        infoWindow.close();
+      })
     }
 
     function showApplicableMarkers() {
       markers.forEach(function(marker, locationIndex) {
         for (var i = 0; i < 7; i++) {
-          if (dayButtons[i].style.backgroundColor == "darkgray" && infoWindows[locationIndex][i]) {
+          if (dayButtons[i].style.backgroundColor == "darkgray" && infoWindowsAvailabilities[locationIndex][i]) {
             marker.setVisible(true)
           }
         }
@@ -103,7 +107,7 @@
           location.link ? contentString += '<a href="' + location.link + '" target="_blank">Website</a>' + "<br>" : 0;
           contentString += phone_number_link + "<br><br>";
           contentString += "<strong>Hours:</strong><br>";
-          infoWindows.push({})
+          infoWindowsAvailabilities.push({})
 
           // Consider cycling through the DAYSOFWEEK here, so Closed days will be easier.
           location.availabilities.forEach(function(availability) {
@@ -120,7 +124,7 @@
             }
 
 
-            infoWindows[locationIndex][availability.day_of_week] = true;
+            infoWindowsAvailabilities[locationIndex][availability.day_of_week] = true;
           })
 
 
@@ -138,6 +142,7 @@
             infowindow.close();
           });
           markers.push(marker)
+          infoWindows.push(infowindow)
         });
         hideAllMarkers()
         showApplicableMarkers()
