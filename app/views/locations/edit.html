@@ -106,7 +106,7 @@
       function getData() {
         $.get("/locations", function(data) {
           data.forEach(function(location) {
-            if (location.day || location.time || location.name || location.address || location.address || location.description || location.link || location.phoneNumber) {
+            if (location.name || location.address || location.address || location.description || location.link || location.phoneNumber) {
               addRow(location)
             }
           })

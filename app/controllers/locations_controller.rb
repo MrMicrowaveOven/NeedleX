@@ -15,11 +15,8 @@ class LocationsController < ApplicationController
         phone_number: location.phone_number,
         created_at: location.created_at,
         updated_at: location.updated_at,
-        day: location.day,
-        time: location.time,
         lat: location.lat,
         lng: location.lng,
-        day_string: location.day_string,
         availabilities: location.availabilities,
       }
     end
@@ -87,6 +84,6 @@ class LocationsController < ApplicationController
 
   private
   def location_params
-    params.require(:location).permit(:day, :day_string, :time, :name, :address, :description, :link, :phone_number, :lat, :lng)
+    params.require(:location).permit(:name, :address, :description, :link, :phone_number, :lat, :lng)
   end
 end

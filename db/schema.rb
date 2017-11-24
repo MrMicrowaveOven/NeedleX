@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170907172421) do
+ActiveRecord::Schema.define(version: 20171124225657) do
 
   create_table "availabilities", force: :cascade do |t|
     t.time "opening"
@@ -30,11 +30,8 @@ ActiveRecord::Schema.define(version: 20170907172421) do
     t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "day"
-    t.string "time"
     t.decimal "lat"
     t.decimal "lng"
-    t.string "day_string"
   end
 
 end
