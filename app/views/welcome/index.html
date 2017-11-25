@@ -72,7 +72,11 @@
 
     function addMarkers(map) {
       $.get("/locations", function(data) {
-        console.log(data);
+        console.log(data.filter(function(location) {
+          if (location.lat && location.lng) {
+            return true;
+          }
+        }));
         data.forEach(function(location, locationIndex) {
           // map.setCenter(results[0].geometry.location);
           var image = {
