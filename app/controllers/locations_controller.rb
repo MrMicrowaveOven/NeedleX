@@ -30,7 +30,7 @@ class LocationsController < ApplicationController
     Location.all.each do |location|
       location.destroy
     end
-    render json: {locations: "Deleted successfully", please_wait: "Update in progress"}
+    render json: {status: "Old locations deleted successfully, please standby for update.", please_wait: "Update in progress"}
   end
 
   def update
@@ -38,7 +38,7 @@ class LocationsController < ApplicationController
     location[:lat] = params[:lat]
     location[:lng] = params[:lng]
     if location.save
-      render json: {locationSave: "Success!"}
+      render json: {status: "Successfuly geolocated location!"}
     else
       render json: {locationSave: "Error #{params[:id]}"}
     end
@@ -79,7 +79,7 @@ class LocationsController < ApplicationController
       end
     end
 
-    render json: {locations: "Successfully updated!  Please reload the page to see the update."}
+    render json: {status: "Successfully updated from spreadsheet!  Please reload the page to see the update."}
   end
 
   private

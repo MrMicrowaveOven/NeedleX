@@ -13,9 +13,9 @@
       <div class="">
         Locations on Table: <div id="locationCount">0</div>
       </div>
-      <!-- <div class="updateStatusWindow" hidden="true">
-        Update Status: <div id="updateStatus"></div>
-      </div> -->
+      <div class="statusWindow">
+        Update Status: <div id="status"></div>
+      </div>
     </div>
       <table id="table">
         <tr>
@@ -37,13 +37,16 @@
     <!-- </div> -->
     <script type="text/javascript">
       function updateFromSpreadsheet() {
+        // $("statusWindow").show();
         $.ajax({
           url: "/locations/1",
           type: "DELETE",
           success: function(response) {
             console.log(response);
+            $("#status").html(response.status)
             $.post("/locations", function(response) {
               console.log(response);
+              $("#status").html(response.status)
             })
           },
           error: function(response) {
