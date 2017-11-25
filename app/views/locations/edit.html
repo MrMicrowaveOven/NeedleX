@@ -13,8 +13,12 @@
       <div class="">
         Locations on Table: <div id="locationCount">0</div>
       </div>
-      <div class="statusWindow">
-        Update Status: <div id="status"></div>
+      <div class="statusWindow hidden">
+        Status: <div id="status"></div>
+      </div>
+      <div class="geolocatedLocationsWindow hidden">
+        Geolocated Locations: <div id="geo-count">
+        </div>
       </div>
     </div>
       <table id="table">
@@ -36,8 +40,10 @@
       </table>
     <!-- </div> -->
     <script type="text/javascript">
+      var geoLocations = [];
       function updateFromSpreadsheet() {
-        // $("statusWindow").show();
+        $(".statusWindow").removeClass("hidden");
+
         $.ajax({
           url: "/locations/1",
           type: "DELETE",
@@ -179,11 +185,11 @@
 
 
         // newLocations = getFormData()
+        $(".geolocatedLocationsWindow").removeClass("hidden");
         getDatabaseLocations.then(function(newLocations) {
           // setLatAndLngForExistingLocations(newLocations, oldLocations)
           console.log(newLocations);
           geocoder = new google.maps.Geocoder();
-          console.group('Sucesses')
           newLocations.forEach(function(newLocation, location_index) {
             setTimeout(function() {
               if (!newLocation["lat"] || !newLocation["lng"]) {
@@ -195,21 +201,16 @@
                       lng: results[0].geometry.location.lng
                     })
                   } else if (status == "OVER_QUERY_LIMIT"){
-                    console.groupEnd()
                     console.log("I tried to save it too fast and got an error...");
-                    console.group('Sucesses')
                   } else if (status == "ZERO_RESULTS"){
-                    console.groupEnd()
                     console.log("I couldn't find this address: " + newLocation.address);
-                    console.group('Sucesses')
                   } else {
-                    console.groupEnd()
                     console.log("Sorry, random error with this address: " + newLocation.address);
-                    console.group('Sucesses')
                   }
                 })
                 } else {
-                  // postLocation(newLocation)
+                  geoLocations.push(newLocation)
+                  updateGeoCount();
                 }
               }, 1000 * location_index)
             })
@@ -221,14 +222,14 @@
           url: "/locations/" + location.id,
           data: location,
           success: function(res) {
-            if (res.locationSave == "Success!") {
-              console.log(new Object({"updated": "Success!"}));
+            if (res.status == "Successfuly geolocated location!") {
+              console.log(res);
+              geoLocations.push(location);
+              updateGeoCount();
             }
           },
           error: function(res) {
-            console.groupEnd()
             console.log(res);
-            console.group('Sucesses')
           }
         })
       }
@@ -245,13 +246,15 @@
           }
         })
       }
-    </script>
 
-    <script type="text/javascript">
       function updateRowCount() {
         var table = $("#table")
         var numRows = table.find(".rowOfData").length
         $("#locationCount").html(numRows);
+      }
+      function updateGeoCount() {
+        console.log(geoLocations.length);
+        $("#geo-count").html(geoLocations.length)
       }
     </script>
     <style media="screen">
@@ -265,6 +268,9 @@
       table {
         width: 100%;
         margin-top: 400px;
+      }
+      .hidden {
+        visibility: hidden;
       }
     </style>
   </body>
