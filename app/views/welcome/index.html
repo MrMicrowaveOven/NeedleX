@@ -114,23 +114,29 @@
           infoWindowsAvailabilities.push({})
 
           // Consider cycling through the DAYSOFWEEK here, so Closed days will be easier.
-          location.availabilities.forEach(function(availability) {
-            if (availability.opening == availability.closing) {
-              contentString += DAYSOFWEEK[availability.day_of_week] + ": 24 hours<br>";
+          DAYSOFWEEK.forEach(function(day_of_week, day_int) {
+            availability = location.availabilities.filter(function(availability) {
+              return availability.day_of_week == day_int;
+            })
+            if (availability.length == 0) {
+              contentString += DAYSOFWEEK[day_int] + ": Closed<br>"
             } else {
-              var opening = new Date(availability.opening)
-              var openingTimeString = formatAMPM(opening);
+              availability = availability[0]
+              if (availability.opening == availability.closing) {
+                contentString += DAYSOFWEEK[availability.day_of_week] + ": 24 hours<br>";
+              } else {
+                var opening = new Date(availability.opening)
+                var openingTimeString = formatAMPM(opening);
 
-              var closing = new Date(availability.closing)
-              var closingTimeString = formatAMPM(closing);
+                var closing = new Date(availability.closing)
+                var closingTimeString = formatAMPM(closing);
 
-              contentString += DAYSOFWEEK[availability.day_of_week] + ": " + openingTimeString + "-" + closingTimeString + "<br>";
+                contentString += DAYSOFWEEK[availability.day_of_week] + ": " + openingTimeString + "-" + closingTimeString + "<br>";
+              }
+
+              infoWindowsAvailabilities[locationIndex][availability.day_of_week] = true;
             }
-
-
-            infoWindowsAvailabilities[locationIndex][availability.day_of_week] = true;
           })
-
 
           var gMapsLinkBase = "https://www.google.com/maps/place/" + location.address.split("+");
           contentString += '<br><a href="' + gMapsLinkBase + '" target="_blank">View on Google Maps</a><br>';
