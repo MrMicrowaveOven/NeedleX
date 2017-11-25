@@ -15,6 +15,7 @@
     markers = [];
     infoWindows = [];
     infoWindowsAvailabilities = [];
+    dayOfWeek = new Date().getDay();
 
     function makeMap(lat, lng) {
       lat = lat || 37.765
@@ -115,16 +116,19 @@
 
           // Consider cycling through the DAYSOFWEEK here, so Closed days will be easier.
           DAYSOFWEEK.forEach(function(day_of_week, day_int) {
-            contentString += '<div class="day_of_week">' + DAYSOFWEEK[day_int] + ':</div>'
+            if (day_int == dayOfWeek) {
+              contentString += "<strong>"
+            }
+            contentString += '<div class="availability"><div class="day_of_week">' + DAYSOFWEEK[day_int] + ':</div>'
             availability = location.availabilities.filter(function(availability) {
               return availability.day_of_week == day_int;
             })
             if (availability.length == 0) {
-              contentString += "<div class='hours'> Closed</div><br>"
+              contentString += "<div class='hours'> Closed</div></div>"
             } else {
               availability = availability[0]
               if (availability.opening == availability.closing) {
-                contentString += "<div class='hours'> 24 hours</div><br>";
+                contentString += "<div class='hours'> 24 hours</div></div>";
               } else {
                 var opening = new Date(availability.opening)
                 var openingTimeString = formatAMPM(opening);
@@ -132,10 +136,13 @@
                 var closing = new Date(availability.closing)
                 var closingTimeString = formatAMPM(closing);
 
-                contentString += "<div class='hours'> " + openingTimeString + "-" + closingTimeString + "</div><br>";
+                contentString += "<div class='hours'> " + openingTimeString + "-" + closingTimeString + "</div></div>";
               }
 
               infoWindowsAvailabilities[locationIndex][day_int] = true;
+            }
+            if (day_int == dayOfWeek) {
+              contentString += "</strong>"
             }
           })
 
