@@ -115,15 +115,16 @@
 
           // Consider cycling through the DAYSOFWEEK here, so Closed days will be easier.
           DAYSOFWEEK.forEach(function(day_of_week, day_int) {
+            contentString += '<div class="day_of_week">' + DAYSOFWEEK[day_int] + ':</div>'
             availability = location.availabilities.filter(function(availability) {
               return availability.day_of_week == day_int;
             })
             if (availability.length == 0) {
-              contentString += DAYSOFWEEK[day_int] + ": Closed<br>"
+              contentString += "<div class='hours'> Closed</div><br>"
             } else {
               availability = availability[0]
               if (availability.opening == availability.closing) {
-                contentString += DAYSOFWEEK[availability.day_of_week] + ": 24 hours<br>";
+                contentString += "<div class='hours'> 24 hours</div><br>";
               } else {
                 var opening = new Date(availability.opening)
                 var openingTimeString = formatAMPM(opening);
@@ -131,10 +132,10 @@
                 var closing = new Date(availability.closing)
                 var closingTimeString = formatAMPM(closing);
 
-                contentString += DAYSOFWEEK[availability.day_of_week] + ": " + openingTimeString + "-" + closingTimeString + "<br>";
+                contentString += "<div class='hours'> " + openingTimeString + "-" + closingTimeString + "</div><br>";
               }
 
-              infoWindowsAvailabilities[locationIndex][availability.day_of_week] = true;
+              infoWindowsAvailabilities[locationIndex][day_int] = true;
             }
           })
 
@@ -203,6 +204,12 @@
       }
     </script>
     <style media="screen">
+    .day_of_week, .hours {
+      display: inline-block;
+    }
+    .day_of_week {
+      width: 80px;
+    }
     #map {
       height: 100%;
     }
