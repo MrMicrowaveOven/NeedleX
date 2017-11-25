@@ -7,17 +7,24 @@
 
   </head>
   <body>
-    <button type="button" name="button" onclick="updateFromSpreadsheet()">Update Data from Spreadsheet</button>
-    <button type="button" name="button" onclick="saveData()">Save Data</button>
     <div id="statusWindow">
       <div class="">
-        Locations on Table: <div id="locationCount">0</div>
+        Locations on table below (this should match the number of locations on the spreadsheet): <div id="locationCount">0</div>
       </div>
+      <br>
+      Start here: This will update the database based on the spreadsheet.  This will not geolocate the locations, so they will NOT show on the map until you "Geolocate"<br>
+      <button type="button" name="button" onclick="updateFromSpreadsheet()">Update Data from Spreadsheet</button>
       <div class="statusWindow hidden">
         Status: <div id="status"></div>
       </div>
+      <br>
+      This will get the latitude/longitude for each location, so they can show on the map.<br>
+      <button type="button" name="button" onclick="saveData()">Geolocate Locations</button>
       <div class="geolocatedLocationsWindow hidden">
         Geolocated Locations: <div id="geo-count">
+        </div>
+        Locations in the spreadsheet that haven't been geolocated (should be zero after geolocation): <div id="non-geolocated">
+
         </div>
       </div>
     </div>
@@ -41,6 +48,7 @@
     <!-- </div> -->
     <script type="text/javascript">
       var geoLocations = [];
+      var numRows = 0;
       function updateFromSpreadsheet() {
         $(".statusWindow").removeClass("hidden");
 
@@ -248,13 +256,13 @@
       }
 
       function updateRowCount() {
-        var table = $("#table")
-        var numRows = table.find(".rowOfData").length
+        numRows = $("#table").find(".rowOfData").length
         $("#locationCount").html(numRows);
       }
       function updateGeoCount() {
         console.log(geoLocations.length);
         $("#geo-count").html(geoLocations.length)
+        $("#non-geolocated").html(numRows - geoLocations.length)
       }
     </script>
     <style media="screen">
@@ -267,7 +275,7 @@
       }
       table {
         width: 100%;
-        margin-top: 400px;
+        margin-top: 30px;
       }
       .hidden {
         visibility: hidden;

@@ -79,7 +79,7 @@ class LocationsController < ApplicationController
       end
     end
 
-    render json: {status: "Successfully updated from spreadsheet!  Please reload the page to see the update."}
+    render json: {status: "Successfully updated from spreadsheet!  Please reload the page to see the update, then Geolocate."}
   end
 
   private
