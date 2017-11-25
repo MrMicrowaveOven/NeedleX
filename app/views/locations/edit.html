@@ -7,14 +7,29 @@
 
   </head>
   <body>
-    <button type="button" name="button" onclick="updateFromSpreadsheet()">Update Data from Spreadsheet</button>
-    <button type="button" name="button" onclick="saveData()">Save Data</button>
-    <!-- <div class="" id="table"> -->
+    <div id="statusWindow">
+      <div class="">
+        Locations on table below (this should match the number of locations on the spreadsheet): <div id="locationCount">0</div>
+      </div>
+      <br>
+      Start here: This will update the database based on the spreadsheet.  This will not geolocate the locations, so they will NOT show on the map until you "Geolocate"<br>
+      <button type="button" name="button" onclick="updateFromSpreadsheet()">Update Data from Spreadsheet</button>
+      <div class="statusWindow hidden">
+        Status: <div id="status"></div>
+      </div>
+      <br>
+      This will get the latitude/longitude for each location, so they can show on the map.<br>
+      <button type="button" name="button" onclick="saveData()">Geolocate Locations</button>
+      <div class="geolocatedLocationsWindow hidden">
+        Geolocated Locations: <div id="geo-count">
+        </div>
+        Locations in the spreadsheet that haven't been geolocated (should be zero after geolocation): <div id="non-geolocated">
+
+        </div>
+      </div>
+    </div>
       <table id="table">
         <tr>
-          <!-- <th>Day</th> -->
-          <!-- <th>DayString</th> -->
-          <!-- <th>Time</th> -->
           <th></th>
           <th>Name</th>
           <th>Address</th>
@@ -32,14 +47,20 @@
       </table>
     <!-- </div> -->
     <script type="text/javascript">
+      var geoLocations = [];
+      var numRows = 0;
       function updateFromSpreadsheet() {
+        $(".statusWindow").removeClass("hidden");
+
         $.ajax({
           url: "/locations/1",
           type: "DELETE",
           success: function(response) {
             console.log(response);
+            $("#status").html(response.status)
             $.post("/locations", function(response) {
               console.log(response);
+              $("#status").html(response.status)
             })
           },
           error: function(response) {
@@ -97,6 +118,7 @@
             + data.friday + "</td><td>"
             + data.saturday + "</td></tr>"
           )
+          updateRowCount();
         })
       }
 
@@ -171,11 +193,11 @@
 
 
         // newLocations = getFormData()
+        $(".geolocatedLocationsWindow").removeClass("hidden");
         getDatabaseLocations.then(function(newLocations) {
           // setLatAndLngForExistingLocations(newLocations, oldLocations)
           console.log(newLocations);
           geocoder = new google.maps.Geocoder();
-          console.group('Sucesses')
           newLocations.forEach(function(newLocation, location_index) {
             setTimeout(function() {
               if (!newLocation["lat"] || !newLocation["lng"]) {
@@ -187,21 +209,16 @@
                       lng: results[0].geometry.location.lng
                     })
                   } else if (status == "OVER_QUERY_LIMIT"){
-                    console.groupEnd()
                     console.log("I tried to save it too fast and got an error...");
-                    console.group('Sucesses')
                   } else if (status == "ZERO_RESULTS"){
-                    console.groupEnd()
                     console.log("I couldn't find this address: " + newLocation.address);
-                    console.group('Sucesses')
                   } else {
-                    console.groupEnd()
                     console.log("Sorry, random error with this address: " + newLocation.address);
-                    console.group('Sucesses')
                   }
                 })
                 } else {
-                  // postLocation(newLocation)
+                  geoLocations.push(newLocation)
+                  updateGeoCount();
                 }
               }, 1000 * location_index)
             })
@@ -213,14 +230,14 @@
           url: "/locations/" + location.id,
           data: location,
           success: function(res) {
-            if (res.locationSave == "Success!") {
-              console.log(new Object({"updated": "Success!"}));
+            if (res.status == "Successfuly geolocated location!") {
+              console.log(res);
+              geoLocations.push(location);
+              updateGeoCount();
             }
           },
           error: function(res) {
-            console.groupEnd()
             console.log(res);
-            console.group('Sucesses')
           }
         })
       }
@@ -237,6 +254,16 @@
           }
         })
       }
+
+      function updateRowCount() {
+        numRows = $("#table").find(".rowOfData").length
+        $("#locationCount").html(numRows);
+      }
+      function updateGeoCount() {
+        console.log(geoLocations.length);
+        $("#geo-count").html(geoLocations.length)
+        $("#non-geolocated").html(numRows - geoLocations.length)
+      }
     </script>
     <style media="screen">
       table, th, td {
@@ -247,7 +274,11 @@
         height: 20px;
       }
       table {
-        width: 100%
+        width: 100%;
+        margin-top: 30px;
+      }
+      .hidden {
+        visibility: hidden;
       }
     </style>
   </body>
