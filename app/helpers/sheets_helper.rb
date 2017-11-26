@@ -27,4 +27,18 @@ module SheetsHelper
 
     worksheets_array
   end
+
+  def self.add_lat_and_lng
+    config_struct = StringIO.new({
+      client_email: ENV['gd_client_email'],
+      private_key: ENV['gd_private_key'].gsub(/\\n/, "\n"),
+    }.to_json)
+
+    session = GoogleDrive::Session.from_service_account_key(config_struct)
+
+    worksheets = session.spreadsheet_by_key(ENV['SPREADSHEET_ID']).worksheets
+    first_worksheet = worksheets[0]
+    first_worksheet[2, 24] = "Butts"
+    first_worksheet.save
+  end
 end
