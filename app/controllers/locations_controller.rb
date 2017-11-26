@@ -17,6 +17,8 @@ class LocationsController < ApplicationController
         updated_at: location.updated_at,
         lat: location.lat,
         lng: location.lng,
+        sheet_number: location.sheet_number,
+        row_number: location.row_number,
         availabilities: location.availabilities,
       }
     end
@@ -47,17 +49,20 @@ class LocationsController < ApplicationController
   def create
     sheets = SheetsHelper.get_sheet_data
 
-    sheets.each do |sheet|
-      sheet.each_with_index do |row, index|
+    sheets.each_with_index do |sheet, sheet_index|
+      sheet.each_with_index do |row, location_index|
         location = Location.new({
           name: row[1],
           address: "#{row[2]}, #{row[3]}, #{row[4]}, #{row[5]}",
           description: row[6],
           link: row[7],
           phone_number: row[8],
+          sheet_number: sheet_index,
+          # Actual data starts at row 2, which is 1-indexed.
+          row_number: location_index + 2
         })
         unless location.save
-          render json: {error: "failure to save Location ##{index}"}
+          render json: {error: "failure to save Location ##{location_index}"}
           return
         end
 
@@ -74,7 +79,7 @@ class LocationsController < ApplicationController
             day_of_week: day_of_week
           })
           unless availability.save
-            render json: {error: "failure to save availability #{day_of_week} for Location ##{index}"}
+            render json: {error: "failure to save availability #{day_of_week} for Location ##{location_index}"}
             return
           end
         end
@@ -86,6 +91,6 @@ class LocationsController < ApplicationController
 
   private
   def location_params
-    params.require(:location).permit(:name, :address, :description, :link, :phone_number, :lat, :lng)
+    params.require(:location).permit(:name, :address, :description, :link, :phone_number, :lat, :lng, :sheet_number, :row_number)
   end
 end
