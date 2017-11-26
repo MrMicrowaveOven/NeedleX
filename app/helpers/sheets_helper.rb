@@ -28,17 +28,18 @@ module SheetsHelper
     worksheets_array
   end
 
-  def self.add_lat_and_lng
+  def self.add_lat_and_lng(location, worksheet_index, row_index)
     config_struct = StringIO.new({
       client_email: ENV['gd_client_email'],
       private_key: ENV['gd_private_key'].gsub(/\\n/, "\n"),
     }.to_json)
 
     session = GoogleDrive::Session.from_service_account_key(config_struct)
-
     worksheets = session.spreadsheet_by_key(ENV['SPREADSHEET_ID']).worksheets
-    first_worksheet = worksheets[0]
-    first_worksheet[2, 24] = "Butts"
-    first_worksheet.save
+    current_worksheet = worksheets[worksheet_index]
+
+    current_worksheet[row_index, 24] = location.lat
+    current_worksheet[row_index, 25] = location.lng
+    current_worksheet.save
   end
 end

@@ -43,6 +43,8 @@
           <th>Thursday</th>
           <th>Friday</th>
           <th>Saturday</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
         </tr>
       </table>
     <!-- </div> -->
@@ -116,7 +118,9 @@
             + data.wednesday + "</td><td>"
             + data.thursday + "</td><td>"
             + data.friday + "</td><td>"
-            + data.saturday + "</td></tr>"
+            + data.saturday + "</td><td>"
+            + data.lat + "</td><td>"
+            + data.lng + "</td></tr>"
           )
           updateRowCount();
         })
@@ -190,8 +194,7 @@
         // Get locations from form
         // Get lats and lngs for each location
         // Save the new locations
-
-
+        
         // newLocations = getFormData()
         $(".geolocatedLocationsWindow").removeClass("hidden");
         getDatabaseLocations.then(function(newLocations) {
