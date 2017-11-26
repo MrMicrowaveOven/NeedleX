@@ -39,6 +39,7 @@ class LocationsController < ApplicationController
     location = Location.find(params[:id])
     location[:lat] = params[:lat]
     location[:lng] = params[:lng]
+    SheetsHelper.add_lat_and_lng(location)
     if location.save
       render json: {status: "Successfuly geolocated location!"}
     else
