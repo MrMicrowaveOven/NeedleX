@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171124225657) do
+ActiveRecord::Schema.define(version: 20171126043509) do
 
   create_table "availabilities", force: :cascade do |t|
     t.time "opening"
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 20171124225657) do
     t.datetime "updated_at", null: false
     t.decimal "lat"
     t.decimal "lng"
+    t.integer "sheet_number"
+    t.integer "row_number"
   end
 
 end
