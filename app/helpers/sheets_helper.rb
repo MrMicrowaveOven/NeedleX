@@ -22,7 +22,7 @@ module SheetsHelper
         end
         rows << new_row
       end
-      worksheets_array += rows
+      worksheets_array << rows
     end
 
     worksheets_array

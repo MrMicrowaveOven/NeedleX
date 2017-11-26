@@ -45,36 +45,38 @@ class LocationsController < ApplicationController
   end
 
   def create
-    rows = SheetsHelper.get_sheet_data
+    sheets = SheetsHelper.get_sheet_data
 
-    rows.each_with_index do |row, index|
-      location = Location.new({
-        name: row[1],
-        address: "#{row[2]}, #{row[3]}, #{row[4]}, #{row[5]}",
-        description: row[6],
-        link: row[7],
-        phone_number: row[8],
-      })
-      unless location.save
-        render json: {error: "failure to save Location ##{index}"}
-        return
-      end
-
-      (9..22).each do |col|
-        next if col % 2 == 0
-        next if row[col].blank?
-        opening_time = row[col].to_i
-        closing_time = row[col + 1].to_i
-        day_of_week = (col - 9) / 2
-        availability = Availability.new({
-          location_id: location.id,
-          opening: Time.local(2000, 1, 1, opening_time / 100, opening_time % 100),
-          closing: Time.local(2000, 1, 1, closing_time / 100, closing_time % 100),
-          day_of_week: day_of_week
+    sheets.each do |sheet|
+      sheet.each_with_index do |row, index|
+        location = Location.new({
+          name: row[1],
+          address: "#{row[2]}, #{row[3]}, #{row[4]}, #{row[5]}",
+          description: row[6],
+          link: row[7],
+          phone_number: row[8],
         })
-        unless availability.save
-          render json: {error: "failure to save availability #{day_of_week} for Location ##{index}"}
+        unless location.save
+          render json: {error: "failure to save Location ##{index}"}
           return
+        end
+
+        (9..22).each do |col|
+          next if col % 2 == 0
+          next if row[col].blank?
+          opening_time = row[col].to_i
+          closing_time = row[col + 1].to_i
+          day_of_week = (col - 9) / 2
+          availability = Availability.new({
+            location_id: location.id,
+            opening: Time.local(2000, 1, 1, opening_time / 100, opening_time % 100),
+            closing: Time.local(2000, 1, 1, closing_time / 100, closing_time % 100),
+            day_of_week: day_of_week
+          })
+          unless availability.save
+            render json: {error: "failure to save availability #{day_of_week} for Location ##{index}"}
+            return
+          end
         end
       end
     end
