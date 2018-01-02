@@ -60,7 +60,9 @@ class LocationsController < ApplicationController
           phone_number: row[8],
           sheet_number: sheet_index,
           # Actual data starts at row 2, which is 1-indexed.
-          row_number: location_index + 2
+          row_number: location_index + 2,
+          lat: row[23],
+          lng: row[24]
         })
         unless location.save
           render json: {error: "failure to save Location ##{location_index}"}
