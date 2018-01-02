@@ -22,9 +22,24 @@ module SheetsHelper
         end
         rows << new_row
       end
-      worksheets_array += rows
+      worksheets_array << rows
     end
 
     worksheets_array
+  end
+
+  def self.add_lat_and_lng(location)
+    config_struct = StringIO.new({
+      client_email: ENV['gd_client_email'],
+      private_key: ENV['gd_private_key'].gsub(/\\n/, "\n"),
+    }.to_json)
+
+    session = GoogleDrive::Session.from_service_account_key(config_struct)
+    worksheets = session.spreadsheet_by_key(ENV['SPREADSHEET_ID']).worksheets
+    current_worksheet = worksheets[location.sheet_number]
+
+    current_worksheet[location.row_number, 24] = location.lat
+    current_worksheet[location.row_number, 25] = location.lng
+    current_worksheet.save
   end
 end

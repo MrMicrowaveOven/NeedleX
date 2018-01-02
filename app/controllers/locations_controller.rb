@@ -17,6 +17,8 @@ class LocationsController < ApplicationController
         updated_at: location.updated_at,
         lat: location.lat,
         lng: location.lng,
+        sheet_number: location.sheet_number,
+        row_number: location.row_number,
         availabilities: location.availabilities,
       }
     end
@@ -37,6 +39,7 @@ class LocationsController < ApplicationController
     location = Location.find(params[:id])
     location[:lat] = params[:lat]
     location[:lng] = params[:lng]
+    SheetsHelper.add_lat_and_lng(location)
     if location.save
       render json: {status: "Successfuly geolocated location!"}
     else
@@ -45,36 +48,43 @@ class LocationsController < ApplicationController
   end
 
   def create
-    rows = SheetsHelper.get_sheet_data
+    sheets = SheetsHelper.get_sheet_data
 
-    rows.each_with_index do |row, index|
-      location = Location.new({
-        name: row[1],
-        address: "#{row[2]}, #{row[3]}, #{row[4]}, #{row[5]}",
-        description: row[6],
-        link: row[7],
-        phone_number: row[8],
-      })
-      unless location.save
-        render json: {error: "failure to save Location ##{index}"}
-        return
-      end
-
-      (9..22).each do |col|
-        next if col % 2 == 0
-        next if row[col].blank?
-        opening_time = row[col].to_i
-        closing_time = row[col + 1].to_i
-        day_of_week = (col - 9) / 2
-        availability = Availability.new({
-          location_id: location.id,
-          opening: Time.local(2000, 1, 1, opening_time / 100, opening_time % 100),
-          closing: Time.local(2000, 1, 1, closing_time / 100, closing_time % 100),
-          day_of_week: day_of_week
+    sheets.each_with_index do |sheet, sheet_index|
+      sheet.each_with_index do |row, location_index|
+        location = Location.new({
+          name: row[1],
+          address: "#{row[2]}, #{row[3]}, #{row[4]}, #{row[5]}",
+          description: row[6],
+          link: row[7],
+          phone_number: row[8],
+          sheet_number: sheet_index,
+          # Actual data starts at row 2, which is 1-indexed.
+          row_number: location_index + 2,
+          lat: row[23],
+          lng: row[24]
         })
-        unless availability.save
-          render json: {error: "failure to save availability #{day_of_week} for Location ##{index}"}
+        unless location.save
+          render json: {error: "failure to save Location ##{location_index}"}
           return
+        end
+
+        (9..22).each do |col|
+          next if col % 2 == 0
+          next if row[col].blank?
+          opening_time = row[col].to_i
+          closing_time = row[col + 1].to_i
+          day_of_week = (col - 9) / 2
+          availability = Availability.new({
+            location_id: location.id,
+            opening: Time.local(2000, 1, 1, opening_time / 100, opening_time % 100),
+            closing: Time.local(2000, 1, 1, closing_time / 100, closing_time % 100),
+            day_of_week: day_of_week
+          })
+          unless availability.save
+            render json: {error: "failure to save availability #{day_of_week} for Location ##{location_index}"}
+            return
+          end
         end
       end
     end
@@ -84,6 +94,6 @@ class LocationsController < ApplicationController
 
   private
   def location_params
-    params.require(:location).permit(:name, :address, :description, :link, :phone_number, :lat, :lng)
+    params.require(:location).permit(:name, :address, :description, :link, :phone_number, :lat, :lng, :sheet_number, :row_number)
   end
 end

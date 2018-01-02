@@ -43,6 +43,8 @@
           <th>Thursday</th>
           <th>Friday</th>
           <th>Saturday</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
         </tr>
       </table>
     <!-- </div> -->
@@ -116,7 +118,9 @@
             + data.wednesday + "</td><td>"
             + data.thursday + "</td><td>"
             + data.friday + "</td><td>"
-            + data.saturday + "</td></tr>"
+            + data.saturday + "</td><td>"
+            + data.lat + "</td><td>"
+            + data.lng + "</td></tr>"
           )
           updateRowCount();
         })
@@ -175,7 +179,6 @@
 
       function setLatAndLngForExistingLocations(newLocations, oldLocations) {
         newLocations.forEach(function(newLocation) {
-          // console.log();
           sameLocation = oldLocations.filter(function(oldLocation) {
             return oldLocation["address"] == newLocation["address"]
           })
@@ -191,37 +194,40 @@
         // Get lats and lngs for each location
         // Save the new locations
 
-
         // newLocations = getFormData()
         $(".geolocatedLocationsWindow").removeClass("hidden");
         getDatabaseLocations.then(function(newLocations) {
           // setLatAndLngForExistingLocations(newLocations, oldLocations)
           console.log(newLocations);
+          locationsToBeGeocoded = newLocations.filter(function(location) {
+            return !location["lat"] || !location["lng"]
+          })
+          locationsAlreadyGeocoded = newLocations.filter(function(location) {
+            return location["lat"] && location["lng"]
+          })
+          geoLocations = geoLocations.concat(locationsAlreadyGeocoded)
+          updateGeoCount()
           geocoder = new google.maps.Geocoder();
-          newLocations.forEach(function(newLocation, location_index) {
+          locationsToBeGeocoded.forEach(function(newLocation, location_index) {
             setTimeout(function() {
-              if (!newLocation["lat"] || !newLocation["lng"]) {
-                geocoder.geocode( { 'address': newLocation.address}, function(results, status) {
-                  if (status == "OK") {
-                    updateLocation({
-                      id: newLocation.id,
-                      lat: results[0].geometry.location.lat,
-                      lng: results[0].geometry.location.lng
-                    })
-                  } else if (status == "OVER_QUERY_LIMIT"){
-                    console.log("I tried to save it too fast and got an error...");
-                  } else if (status == "ZERO_RESULTS"){
-                    console.log("I couldn't find this address: " + newLocation.address);
-                  } else {
-                    console.log("Sorry, random error with this address: " + newLocation.address);
-                  }
-                })
-                } else {
+              geocoder.geocode( { 'address': newLocation.address}, function(results, status) {
+                if (status == "OK") {
+                  updateLocation({
+                    id: newLocation.id,
+                    lat: results[0].geometry.location.lat,
+                    lng: results[0].geometry.location.lng
+                  })
                   geoLocations.push(newLocation)
-                  updateGeoCount();
+                } else if (status == "OVER_QUERY_LIMIT"){
+                  console.log("I tried to save it too fast and got an error...");
+                } else if (status == "ZERO_RESULTS"){
+                  console.log("I couldn't find this address: " + newLocation.address);
+                } else {
+                  console.log("Sorry, random error with this address: " + newLocation.address);
                 }
-              }, 1000 * location_index)
-            })
+              })
+            }, 1000 * location_index)
+          })
         })
       }
       function updateLocation(location) {
@@ -260,7 +266,6 @@
         $("#locationCount").html(numRows);
       }
       function updateGeoCount() {
-        console.log(geoLocations.length);
         $("#geo-count").html(geoLocations.length)
         $("#non-geolocated").html(numRows - geoLocations.length)
       }
