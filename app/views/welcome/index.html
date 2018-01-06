@@ -15,6 +15,7 @@
     markers = [];
     infoWindows = [];
     infoWindowsAvailabilities = [];
+    availabilities = []
     dayOfWeek = new Date().getDay();
 
     function makeMap(lat, lng) {
@@ -53,7 +54,7 @@
     function showApplicableMarkers() {
       markers.forEach(function(marker, locationIndex) {
         for (var i = 0; i < 7; i++) {
-          if (dayButtons[i].style.backgroundColor == "darkgray" && infoWindowsAvailabilities[locationIndex][i]) {
+          if (dayButtons[i].style.backgroundColor == "darkgray" && availabilities[locationIndex][i]) {
             marker.setVisible(true)
           }
         }
@@ -117,6 +118,7 @@
           opening_times = [location.sun_open, location.mon_open, location.tues_open, location.wed_open, location.thurs_open, location.fri_open, location.sat_open]
           closing_times = [location.sun_close, location.mon_close, location.tues_close, location.wed_close, location.thurs_close, location.fri_close, location.sat_close]
 
+          availability = []
           day_strings.forEach(function(day, dayIndex) {
             if (dayOfWeek == dayIndex) {
               contentString += "<strong>"
@@ -128,12 +130,15 @@
 
             if (!opening || !closing) {
               contentString += "<div class='hours'> Closed</div></div>";
+              availability[dayIndex] = false;
             } else if (opening == closing) {
               contentString += "<div class='hours'> 24 hours</div></div>";
+              availability[dayIndex] = true;
             } else {
               var openingTimeString = formatAMPM(new Date(opening));
               var closingTimeString = formatAMPM(new Date(closing));
               contentString += "<div class='hours'> " + openingTimeString + "-" + closingTimeString + "</div></div>";
+              availability[dayIndex] = true;
             }
             if (dayOfWeek == dayIndex) {
               contentString += "</strong>"
@@ -155,6 +160,7 @@
           });
           markers.push(marker)
           infoWindows.push(infowindow)
+          availabilities.push(availability)
         });
         // hideAllMarkers()
         // showApplicableMarkers()
