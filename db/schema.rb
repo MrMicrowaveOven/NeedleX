@@ -10,17 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171126043509) do
-
-  create_table "availabilities", force: :cascade do |t|
-    t.time "opening"
-    t.time "closing"
-    t.integer "day_of_week"
-    t.integer "location_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["location_id"], name: "index_availabilities_on_location_id"
-  end
+ActiveRecord::Schema.define(version: 20180106124551) do
 
   create_table "locations", force: :cascade do |t|
     t.string "name"
@@ -34,6 +24,20 @@ ActiveRecord::Schema.define(version: 20171126043509) do
     t.decimal "lng"
     t.integer "sheet_number"
     t.integer "row_number"
+    t.time "sun_open"
+    t.time "sun_close"
+    t.time "mon_open"
+    t.time "mon_close"
+    t.time "tues_open"
+    t.time "tues_close"
+    t.time "wed_open"
+    t.time "wed_close"
+    t.time "thurs_open"
+    t.time "thurs_close"
+    t.time "fri_open"
+    t.time "fri_close"
+    t.time "sat_open"
+    t.time "sat_close"
   end
 
 end
