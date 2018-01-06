@@ -79,51 +79,25 @@
           link: "",
           phoneNumber: "",
         }
-        // For some unknown reason, the code below doesn't run without this console.log
-        console.log();
-        ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"].forEach(function(day) {
-          if (!data[day] || data[day] == "undefined") {
-            data[day] = ""
-          }
-        })
-
-        $.get("/availabilities", function(availabilities) {
-          // console.log(availabilities);
-          availabilities.forEach(function(availability) {
-            if (availability.location_id === data.id) {
-              // console.log(availability);
-              openingTime = new Date(availability.opening);
-              openingHour = openingTime.getHours().toString();
-              openingMinutes = openingTime.getMinutes().toString();
-              openingMinutes = openingMinutes.length < 2 ? openingMinutes = "0" + openingMinutes : openingMinutes = openingMinutes
-
-              closingTime = new Date(availability.closing)
-              closingHour = closingTime.getHours().toString();
-              closingMinutes = closingTime.getMinutes().toString();
-              closingMinutes = closingMinutes.length < 2 ? closingMinutes = "0" + closingMinutes : closingMinutes = closingMinutes
-              data[["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"][availability.day_of_week]] = openingHour + ":" + openingMinutes + "," + closingHour + ":" + openingMinutes;
-            }
-          })
-          $("table").append(
-            "<tr class='rowOfData'><td>"
-            + $("table tbody tr").length + "</td><td>"
-            + data.name + "</td><td>"
-            + data.address + "</td><td>"
-            + data.description + "</td><td>"
-            + data.link + "</td><td>"
-            + data.phone_number + "</td><td>"
-            + data.sunday + "</td><td>"
-            + data.monday + "</td><td>"
-            + data.tuesday + "</td><td>"
-            + data.wednesday + "</td><td>"
-            + data.thursday + "</td><td>"
-            + data.friday + "</td><td>"
-            + data.saturday + "</td><td>"
-            + data.lat + "</td><td>"
-            + data.lng + "</td></tr>"
-          )
-          updateRowCount();
-        })
+        $("table").append(
+          "<tr class='rowOfData'><td>"
+          + $("table tbody tr").length + "</td><td>"
+          + data.name + "</td><td>"
+          + data.address + "</td><td>"
+          + data.description + "</td><td>"
+          + data.link + "</td><td>"
+          + data.phone_number + "</td><td>"
+          + data.sun_open + "," + data.sun_close + "</td><td>"
+          + data.mon_open + "," + data.mon_close + "</td><td>"
+          + data.tues_open + "," + data.tues_close + "</td><td>"
+          + data.wed_open + "," + data.wed_close + "</td><td>"
+          + data.thurs_open + "," + data.thurs_close + "</td><td>"
+          + data.fri_open + "," + data.fri_close + "</td><td>"
+          + data.sat_open + "," + data.sat_close + "</td><td>"
+          + data.lat + "</td><td>"
+          + data.lng + "</td></tr>"
+        )
+        updateRowCount();
       }
 
     </script>

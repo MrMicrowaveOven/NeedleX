@@ -3,9 +3,8 @@ require 'time'
 class LocationsController < ApplicationController
   skip_before_action :verify_authenticity_token
   def index
-    locations = Location.includes(:availabilities)
     all_locations = []
-    locations.each do |location|
+    Location.all.each do |location|
       all_locations << {
         id: location.id,
         name: location.name,
@@ -19,7 +18,20 @@ class LocationsController < ApplicationController
         lng: location.lng,
         sheet_number: location.sheet_number,
         row_number: location.row_number,
-        availabilities: location.availabilities,
+        sun_open: location.sun_open,
+        sun_close: location.sun_close,
+        mon_open: location.mon_open,
+        mon_close: location.mon_close,
+        tues_open: location.tues_open,
+        tues_close: location.tues_close,
+        wed_open: location.wed_open,
+        wed_close: location.wed_close,
+        thurs_open: location.thurs_open,
+        thurs_close: location.thurs_close,
+        fri_open: location.fri_open,
+        fri_close: location.fri_close,
+        sat_open: location.sat_open,
+        sat_close: location.sat_close,
       }
     end
     render json: all_locations
@@ -62,29 +74,25 @@ class LocationsController < ApplicationController
           # Actual data starts at row 2, which is 1-indexed.
           row_number: location_index + 2,
           lat: row[23],
-          lng: row[24]
+          lng: row[24],
+          sun_open: Time.local(2000, 1, 1, row[9].to_i / 100, row[9].to_i % 100),
+          sun_close: Time.local(2000, 1, 1, row[10].to_i / 100, row[10].to_i % 100),
+          mon_open: Time.local(2000, 1, 1, row[11].to_i / 100, row[11].to_i % 100),
+          mon_close: Time.local(2000, 1, 1, row[12].to_i / 100, row[12].to_i % 100),
+          tues_open: Time.local(2000, 1, 1, row[13].to_i / 100, row[13].to_i % 100),
+          tues_close: Time.local(2000, 1, 1, row[14].to_i / 100, row[14].to_i % 100),
+          wed_open: Time.local(2000, 1, 1, row[15].to_i / 100, row[15].to_i % 100),
+          wed_close: Time.local(2000, 1, 1, row[16].to_i / 100, row[16].to_i % 100),
+          thurs_open: Time.local(2000, 1, 1, row[17].to_i / 100, row[17].to_i % 100),
+          thurs_close: Time.local(2000, 1, 1, row[18].to_i / 100, row[18].to_i % 100),
+          fri_open: Time.local(2000, 1, 1, row[19].to_i / 100, row[19].to_i % 100),
+          fri_close: Time.local(2000, 1, 1, row[20].to_i / 100, row[20].to_i % 100),
+          sat_open: Time.local(2000, 1, 1, row[21].to_i / 100, row[21].to_i % 100),
+          sat_close: Time.local(2000, 1, 1, row[22].to_i / 100, row[22].to_i % 100),
         })
         unless location.save
           render json: {error: "failure to save Location ##{location_index}"}
           return
-        end
-
-        (9..22).each do |col|
-          next if col % 2 == 0
-          next if row[col].blank?
-          opening_time = row[col].to_i
-          closing_time = row[col + 1].to_i
-          day_of_week = (col - 9) / 2
-          availability = Availability.new({
-            location_id: location.id,
-            opening: Time.local(2000, 1, 1, opening_time / 100, opening_time % 100),
-            closing: Time.local(2000, 1, 1, closing_time / 100, closing_time % 100),
-            day_of_week: day_of_week
-          })
-          unless availability.save
-            render json: {error: "failure to save availability #{day_of_week} for Location ##{location_index}"}
-            return
-          end
         end
       end
     end

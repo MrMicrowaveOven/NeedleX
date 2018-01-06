@@ -112,36 +112,30 @@
           location.link ? contentString += '<a href="' + location.link + '" target="_blank">Website</a>' + "<br>" : 0;
           contentString += phone_number_link + "<br><br>";
           contentString += "<strong>Hours:</strong><br>";
-          infoWindowsAvailabilities.push({})
 
-          // Consider cycling through the DAYSOFWEEK here, so Closed days will be easier.
-          DAYSOFWEEK.forEach(function(day_of_week, day_int) {
-            if (day_int == dayOfWeek) {
+          day_strings = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+          opening_times = [location.sun_open, location.mon_open, location.tues_open, location.wed_open, location.thurs_open, location.fri_open, location.sat_open]
+          closing_times = [location.sun_close, location.mon_close, location.tues_close, location.wed_close, location.thurs_close, location.fri_close, location.sat_close]
+
+          day_strings.forEach(function(day, dayIndex) {
+            if (dayOfWeek == dayIndex) {
               contentString += "<strong>"
             }
-            contentString += '<div class="availability"><div class="day_of_week">' + DAYSOFWEEK[day_int] + ':</div>'
-            availability = location.availabilities.filter(function(availability) {
-              return availability.day_of_week == day_int;
-            })
-            if (availability.length == 0) {
-              contentString += "<div class='hours'> Closed</div></div>"
+            contentString += "<div class='availability'><div class='day_of_week'>" + day + ":</div>"
+
+            opening = opening_times[dayIndex]
+            closing = closing_times[dayIndex]
+
+            if (!opening || !closing) {
+              contentString += "<div class='hours'> Closed</div></div>";
+            } else if (opening == closing) {
+              contentString += "<div class='hours'> 24 hours</div></div>";
             } else {
-              availability = availability[0]
-              if (availability.opening == availability.closing) {
-                contentString += "<div class='hours'> 24 hours</div></div>";
-              } else {
-                var opening = new Date(availability.opening)
-                var openingTimeString = formatAMPM(opening);
-
-                var closing = new Date(availability.closing)
-                var closingTimeString = formatAMPM(closing);
-
-                contentString += "<div class='hours'> " + openingTimeString + "-" + closingTimeString + "</div></div>";
-              }
-
-              infoWindowsAvailabilities[locationIndex][day_int] = true;
+              var openingTimeString = formatAMPM(new Date(opening));
+              var closingTimeString = formatAMPM(new Date(closing));
+              contentString += "<div class='hours'> " + openingTimeString + "-" + closingTimeString + "</div></div>";
             }
-            if (day_int == dayOfWeek) {
+            if (dayOfWeek == dayIndex) {
               contentString += "</strong>"
             }
           })
@@ -162,8 +156,8 @@
           markers.push(marker)
           infoWindows.push(infowindow)
         });
-        hideAllMarkers()
-        showApplicableMarkers()
+        // hideAllMarkers()
+        // showApplicableMarkers()
       })
     }
 
