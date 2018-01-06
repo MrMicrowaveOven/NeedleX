@@ -38,9 +38,6 @@ class LocationsController < ApplicationController
   end
 
   def destroy
-    Availability.all.each do |availability|
-      availability.destroy
-    end
     Location.all.each do |location|
       location.destroy
     end

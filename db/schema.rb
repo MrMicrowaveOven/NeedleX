@@ -10,17 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180106104500) do
-
-  create_table "availabilities", force: :cascade do |t|
-    t.time "opening"
-    t.time "closing"
-    t.integer "day_of_week"
-    t.integer "location_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["location_id"], name: "index_availabilities_on_location_id"
-  end
+ActiveRecord::Schema.define(version: 20180106124551) do
 
   create_table "locations", force: :cascade do |t|
     t.string "name"
