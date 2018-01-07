@@ -151,11 +151,17 @@
           var gMapsLinkBase = "https://www.google.com/maps/place/" + location.address.split("+");
           contentString += '<br><a href="' + gMapsLinkBase + '" target="_blank">View on Google Maps</a><br>';
 
+          contentString = "<div class='" + (mobile ? 'infoWindowContentMobile' : 'infoWindowContent') + "'>" + contentString + "</div>"
+
           var infowindow = new google.maps.InfoWindow({
             content: contentString
           });
           marker.addListener('click', function() {
             infowindow.open(map, marker);
+            // An attempt at making the "close" button larger for mobile.  Image didn't resize to its outside width.
+            // if (mobile) {
+              // $("#map > div > div > div:nth-child(1) > div:nth-child(4) > div:nth-child(4) > div > img")
+            // }
           });
           // google.maps.event.addListener(map, 'click', infowindow.close());
           map.addListener('click', function() {
@@ -214,20 +220,31 @@
       }
     </script>
     <style media="screen">
+    .infoWindowContentMobile {
+      font-size: 32px;
+    }
+
+    .infoWindowContentMobile .day_of_week {
+      width: 200px;
+    }
+
     .day_of_week, .hours {
       display: inline-block;
     }
-    .day_of_week {
+
+    .infoWindowContent .day_of_week {
       width: 80px;
     }
+
     #map {
       height: 100%;
     }
+
     html, body {
         height: 100%;
         margin: 0;
         padding: 0;
-      }
+    }
     </style>
   </body>
 </html>
