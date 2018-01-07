@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180106124551) do
+ActiveRecord::Schema.define(version: 20180107223142) do
 
   create_table "locations", force: :cascade do |t|
     t.string "name"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20180106124551) do
     t.time "fri_close"
     t.time "sat_open"
     t.time "sat_close"
+    t.string "services"
   end
 
 end

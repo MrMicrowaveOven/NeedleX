@@ -43,6 +43,7 @@
           <th>Thursday</th>
           <th>Friday</th>
           <th>Saturday</th>
+          <th>Services</th>
           <th>Latitude</th>
           <th>Longitude</th>
         </tr>
@@ -102,7 +103,7 @@
           + "," + (new Date(data.fri_close)).getHours() + ":" + ((new Date(data.fri_close)).getMinutes() || "00") + "</td><td>"
           + (new Date(data.sat_open)).getHours() + ":" + ((new Date(data.sat_open)).getMinutes() || "00")
           + "," + (new Date(data.sat_close)).getHours() + ":" + ((new Date(data.sat_close)).getMinutes() || "00") + "</td><td>"
-
+          + data.services + "</td><td>"
           + data.lat + "</td><td>"
           + data.lng + "</td></tr>"
         )

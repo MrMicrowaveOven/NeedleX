@@ -16,6 +16,7 @@ class LocationsController < ApplicationController
         updated_at: location.updated_at,
         lat: location.lat,
         lng: location.lng,
+        services: location.services,
         sheet_number: location.sheet_number,
         row_number: location.row_number,
         sun_open: location.sun_open,
@@ -61,6 +62,11 @@ class LocationsController < ApplicationController
 
     sheets.each_with_index do |sheet, sheet_index|
       sheet.each_with_index do |row, location_index|
+        services = []
+        (26..47).to_a.each do |service_index|
+          services << (row[service_index] == 'T' ? '1' : '0')
+        end
+        services_string = services.join
         location = Location.new({
           name: row[1],
           address: "#{row[2]}, #{row[3]}, #{row[4]}, #{row[5]}",
@@ -72,6 +78,7 @@ class LocationsController < ApplicationController
           row_number: location_index + 2,
           lat: row[23],
           lng: row[24],
+          services: services_string,
           sun_open: row[9].empty? ? nil : Time.local(2000, 1, 1, row[9].to_i / 100, row[9].to_i % 100),
           sun_close: row[10].empty? ? nil : Time.local(2000, 1, 1, row[10].to_i / 100, row[10].to_i % 100),
           mon_open: row[11].empty? ? nil : Time.local(2000, 1, 1, row[11].to_i / 100, row[11].to_i % 100),

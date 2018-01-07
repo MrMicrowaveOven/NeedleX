@@ -11,6 +11,7 @@
     </div>
     <script type="text/javascript">
     DAYSOFWEEK = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    SERVICES = ["Needle Exchange", "Naloxone Kits", "HIV Testing and Counseling",	"Hep C Testing",	"Drug Treatment", "Support and Counseling",	"General Medical Clinic", "Case Management Services", "Wound care", "Food Banks",	"Sack Lunch",	"Hot Meals", "Showers", "Laundry Housing", "Homeless Support", "Speciality in Sex worker support", "Speciality in Transgender support", "Speciality LGBTQ+ services", "Speciality in HIV Services", "Crisis Intervention", "Herbal/Acupuncture Services"]
     dayButtons = [];
     markers = [];
     infoWindows = [];
@@ -115,6 +116,19 @@
           location.description ? contentString += location.description + "<br>" : 0;
           location.link ? contentString += '<a href="' + location.link + '" target="_blank">Website</a>' + "<br>" : 0;
           contentString += phone_number_link + "<br><br>";
+
+          services_string = location.services;
+
+          if (services_string.indexOf("1") !== -1) {
+            contentString += "<strong>Services: </strong><br>"
+            for (var i = 0; i < services_string.length; i++) {
+              if (services_string[i] == "1") {
+                contentString += SERVICES[i] + '<br>'
+              }
+            }
+            contentString += "<br>";
+          }
+
           contentString += "<strong>Hours:</strong><br>";
 
           day_strings = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
