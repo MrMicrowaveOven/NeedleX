@@ -7,7 +7,6 @@
   </head>
   <body>
     <div class="" id="map">
-
     </div>
     <script type="text/javascript">
     DAYSOFWEEK = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -42,37 +41,37 @@
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(dayDiv);
       })
       // Add locations controls at bottom of screen
-      [
+      citiesArray = [
         {
           name: "SF",
           center: {
             lat: mobile ? 37.77 : 37.765,
-            lng: mobile ? -122.44 : -122.42
+            lng: mobile ? -122.44 : -122.42,
           },
-          zoom: 13
+          zoom: 13,
         },
         {
           name: "East Bay",
           center: {
             lat: mobile ? 37.77 : 37.85,
-            lng: mobile ? -122.44 : -122.2
+            lng: mobile ? -122.44 : -122.2,
           },
-          zoom: 12
+          zoom: 12,
         },
         {
           name: "NY",
           center: {
             lat: mobile ? 37.77 : 43,
-            lng: mobile ? -122.44 : -76
+            lng: mobile ? -122.44 : -76,
           },
-          zoom: 7
-        },
-      ].forEach(function(city, cityIndex) {
+          zoom: 7,
+        }
+      ];
+      citiesArray.forEach(function(city, cityIndex) {
         var cityDiv = document.createElement('div');
         var cityControl = new CityButton(cityDiv, map, city)
         map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(cityDiv)
       })
-
 
       addMarkers(map);
     }
