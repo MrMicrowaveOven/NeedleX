@@ -63,8 +63,17 @@
         var cityControl = new CityButton(cityDiv, map, city)
         map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(cityDiv)
       })
-
       addMarkers(map);
+      map.addListener('click', function(position) {
+        console.log("Click recorded!  Here's your information:");
+        console.log('You clicked at a latitude of:');
+        console.log(position.latLng.lat());
+        console.log('And at a longitude of:');
+        console.log(position.latLng.lng());
+        console.log('And with a zoom of:');
+        console.log(map.getZoom());
+        console.log("Now get this info to Malekai!");
+      })
     }
 
     function hideAllMarkers() {
@@ -104,6 +113,7 @@
             return true;
           }
         }));
+        console.log("Greetings admin!  This is where click information will be displayed.");
         data.forEach(function(location, locationIndex) {
           // map.setCenter(results[0].geometry.location);
           var sizeOfIcons = mobile ? new google.maps.Size(96, 96) : new google.maps.Size(48, 48)
@@ -290,6 +300,7 @@ function CityButton(cityDiv, map, city) {
         });
         dayButtons.push(controlUI)
       }
+
     </script>
     <style media="screen">
     .infoWindowContentMobile {
