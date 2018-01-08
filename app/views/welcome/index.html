@@ -9,14 +9,31 @@
     <div class="" id="map">
     </div>
     <script type="text/javascript">
+    mobile = navigator.userAgent.indexOf('iPhone') != -1 || navigator.userAgent.indexOf('Android') != -1
     DAYSOFWEEK = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     SERVICES = ["Needle Exchange", "Naloxone Kits", "HIV Testing and Counseling",	"Hep C Testing",	"Drug Treatment", "Support and Counseling",	"General Medical Clinic", "Case Management Services", "Wound care", "Food Banks",	"Sack Lunch",	"Hot Meals", "Showers", "Laundry Housing", "Homeless Support", "Speciality in Sex worker support", "Speciality in Transgender support", "Speciality LGBTQ+ services", "Speciality in HIV Services", "Crisis Intervention", "Herbal/Acupuncture Services"]
+    CITIES = [
+      { name: "SF",
+        center: {
+          lat: mobile ? 37.77 : 37.765,
+          lng: mobile ? -122.44 : -122.42,
+        }, zoom: 13 },
+      { name: "East Bay",
+        center: {
+          lat: mobile ? 37.85 : 37.87,
+          lng: mobile ? -122.25 : -122.2,
+        }, zoom: 12 },
+      { name: "NY",
+        center: {
+          lat: mobile ? 43 : 43,
+          lng: mobile ? -76 : -76,
+        }, zoom: 7 }
+    ];
     dayButtons = [];
     cityButtons = [];
     markers = [];
     infoWindows = [];
     availabilities = []
-    mobile = navigator.userAgent.indexOf('iPhone') != -1 || navigator.userAgent.indexOf('Android') != -1
     dayOfWeek = new Date().getDay();
 
     function makeMap(lat, lng) {
@@ -32,7 +49,7 @@
       // Add day filter buttons at top of screen
       dayOfWeekInt = new Date().getDay();
       var selected;
-      ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].forEach(function(day, dayIndex) {
+      DAYSOFWEEK.forEach(function(day, dayIndex) {
         var dayDiv = document.createElement('div');
         selected = dayIndex == dayOfWeekInt
         var dayControl = new DayButton(dayDiv, map, day, selected);
@@ -41,33 +58,7 @@
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(dayDiv);
       })
       // Add locations controls at bottom of screen
-      citiesArray = [
-        {
-          name: "SF",
-          center: {
-            lat: mobile ? 37.77 : 37.765,
-            lng: mobile ? -122.44 : -122.42,
-          },
-          zoom: 13,
-        },
-        {
-          name: "East Bay",
-          center: {
-            lat: mobile ? 37.85 : 37.87,
-            lng: mobile ? -122.25 : -122.2,
-          },
-          zoom: 12,
-        },
-        {
-          name: "NY",
-          center: {
-            lat: mobile ? 43 : 43,
-            lng: mobile ? -76 : -76,
-          },
-          zoom: 7,
-        }
-      ];
-      citiesArray.forEach(function(city, cityIndex) {
+      CITIES.forEach(function(city, cityIndex) {
         var cityDiv = document.createElement('div');
         var cityControl = new CityButton(cityDiv, map, city)
         map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(cityDiv)
@@ -163,12 +154,11 @@
 
           contentString += "<strong>Hours:</strong><br>";
 
-          day_strings = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
           opening_times = [location.sun_open, location.mon_open, location.tues_open, location.wed_open, location.thurs_open, location.fri_open, location.sat_open]
           closing_times = [location.sun_close, location.mon_close, location.tues_close, location.wed_close, location.thurs_close, location.fri_close, location.sat_close]
 
           availability = []
-          day_strings.forEach(function(day, dayIndex) {
+          DAYSOFWEEK.forEach(function(day, dayIndex) {
             if (dayOfWeek == dayIndex) {
               contentString += "<strong>"
             }
