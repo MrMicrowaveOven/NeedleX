@@ -53,16 +53,16 @@
         {
           name: "East Bay",
           center: {
-            lat: mobile ? 37.77 : 37.85,
-            lng: mobile ? -122.44 : -122.2,
+            lat: mobile ? 37.85 : 37.87,
+            lng: mobile ? -122.25 : -122.2,
           },
           zoom: 12,
         },
         {
           name: "NY",
           center: {
-            lat: mobile ? 37.77 : 43,
-            lng: mobile ? -122.44 : -76,
+            lat: mobile ? 43 : 43,
+            lng: mobile ? -76 : -76,
           },
           zoom: 7,
         }
@@ -241,7 +241,7 @@ function CityButton(cityDiv, map, city) {
   controlUI.style.cursor = 'pointer';
   controlUI.style.marginBottom = '22px';
   controlUI.style.textAlign = 'center';
-  controlUI.style.width = '100px';
+  controlUI.style.width = mobile ? '200px' : '100px';
   // controlUI.title = 'Click to show c';
   cityDiv.appendChild(controlUI);
 
