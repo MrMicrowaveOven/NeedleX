@@ -7,16 +7,33 @@
   </head>
   <body>
     <div class="" id="map">
-
     </div>
     <script type="text/javascript">
+    mobile = navigator.userAgent.indexOf('iPhone') != -1 || navigator.userAgent.indexOf('Android') != -1
     DAYSOFWEEK = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     SERVICES = ["Needle Exchange", "Naloxone Kits", "HIV Testing and Counseling",	"Hep C Testing",	"Drug Treatment", "Support and Counseling",	"General Medical Clinic", "Case Management Services", "Wound care", "Food Banks",	"Sack Lunch",	"Hot Meals", "Showers", "Laundry Housing", "Homeless Support", "Speciality in Sex worker support", "Speciality in Transgender support", "Speciality LGBTQ+ services", "Speciality in HIV Services", "Crisis Intervention", "Herbal/Acupuncture Services"]
+    CITIES = [
+      { name: "SF",
+        center: {
+          lat: mobile ? 37.77 : 37.765,
+          lng: mobile ? -122.44 : -122.42,
+        }, zoom: 13 },
+      { name: "East Bay",
+        center: {
+          lat: mobile ? 37.85 : 37.87,
+          lng: mobile ? -122.25 : -122.2,
+        }, zoom: 12 },
+      { name: "NY",
+        center: {
+          lat: mobile ? 43 : 43,
+          lng: mobile ? -76 : -76,
+        }, zoom: 7 }
+    ];
     dayButtons = [];
+    cityButtons = [];
     markers = [];
     infoWindows = [];
     availabilities = []
-    mobile = navigator.userAgent.indexOf('iPhone') != -1 || navigator.userAgent.indexOf('Android') != -1
     dayOfWeek = new Date().getDay();
 
     function makeMap(lat, lng) {
@@ -29,10 +46,10 @@
       }
       var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-// Add day filter buttons at top of screen
+      // Add day filter buttons at top of screen
       dayOfWeekInt = new Date().getDay();
       var selected;
-      ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].forEach(function(day, dayIndex) {
+      DAYSOFWEEK.forEach(function(day, dayIndex) {
         var dayDiv = document.createElement('div');
         selected = dayIndex == dayOfWeekInt
         var dayControl = new DayButton(dayDiv, map, day, selected);
@@ -40,6 +57,13 @@
         dayDiv.index = dayIndex;
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(dayDiv);
       })
+      // Add locations controls at bottom of screen
+      CITIES.forEach(function(city, cityIndex) {
+        var cityDiv = document.createElement('div');
+        var cityControl = new CityButton(cityDiv, map, city)
+        map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(cityDiv)
+      })
+
       addMarkers(map);
     }
 
@@ -82,7 +106,6 @@
         }));
         data.forEach(function(location, locationIndex) {
           // map.setCenter(results[0].geometry.location);
-          console.log(mobile);
           var sizeOfIcons = mobile ? new google.maps.Size(96, 96) : new google.maps.Size(48, 48)
           var image = {
             url: "https://68.media.tumblr.com/08815ef78ff0dc07bf671d7dc25f2428/tumblr_ovgx0j0zXk1v497yzo1_75sq.png",
@@ -131,12 +154,11 @@
 
           contentString += "<strong>Hours:</strong><br>";
 
-          day_strings = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
           opening_times = [location.sun_open, location.mon_open, location.tues_open, location.wed_open, location.thurs_open, location.fri_open, location.sat_open]
           closing_times = [location.sun_close, location.mon_close, location.tues_close, location.wed_close, location.thurs_close, location.fri_close, location.sat_close]
 
           availability = []
-          day_strings.forEach(function(day, dayIndex) {
+          DAYSOFWEEK.forEach(function(day, dayIndex) {
             if (dayOfWeek == dayIndex) {
               contentString += "<strong>"
             }
@@ -197,6 +219,42 @@
         JSElement.src = JSLink;
         document.getElementsByTagName('head')[0].appendChild(JSElement);
       })
+
+// CityButton Constructor
+function CityButton(cityDiv, map, city) {
+  // Set CSS for the control border.
+  var controlUI = document.createElement('div');
+  controlUI.style.backgroundColor = '#fff';
+  controlUI.style.border = '2px solid #fff';
+  controlUI.style.borderRadius = '3px';
+  controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+  controlUI.style.cursor = 'pointer';
+  controlUI.style.marginBottom = '22px';
+  controlUI.style.textAlign = 'center';
+  controlUI.style.width = mobile ? '200px' : '100px';
+  // controlUI.title = 'Click to show c';
+  cityDiv.appendChild(controlUI);
+
+  // Set CSS for the control interior.
+  var controlText = document.createElement('div');
+  controlText.style.color = 'rgb(25,25,25)';
+  controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+  controlText.style.fontSize = mobile ? '24px' : '16px';
+  controlText.style.lineHeight = mobile ? '57px' : '38px';
+  controlText.style.paddingLeft = '5px';
+  controlText.style.paddingRight = '5px';
+  controlText.innerHTML = city.name;
+  controlUI.appendChild(controlText);
+
+  // Setup the click event listeners: simply set the map to Chicago.
+  controlUI.addEventListener('click', function() {
+    map.setCenter(city.center)
+    map.setZoom(city.zoom)
+    // var currentColor = controlUI.style.backgroundColor
+    // controlUI.style.backgroundColor = currentColor == "rgb(255, 255, 255)" ? "darkgray" : "rgb(255, 255, 255)";
+  });
+  cityButtons.push(controlUI)
+}
 
 // DayButton Constructor
       function DayButton(controlDiv, map, day, selected) {
