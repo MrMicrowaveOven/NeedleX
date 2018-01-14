@@ -208,8 +208,12 @@
             // if (mobile) {
               // $("#map > div > div > div:nth-child(1) > div:nth-child(4) > div:nth-child(4) > div > img")
             // }
+            $(".infoWindowContent").parent().parent().parent().parent().off("click")
+            $(".infoWindowContent").parent().parent().parent().parent().on("click", function(infoWindowContainer) {
+              $(".infoWindowContent").parent().parent().parent().parent().css("z-index", "-1")
+              infoWindowContainer.currentTarget.style.zIndex = "0";
+            })
           });
-          // google.maps.event.addListener(map, 'click', infowindow.close());
           map.addListener('click', function() {
             infowindow.close();
           });
@@ -222,13 +226,13 @@
       })
     }
 
-      // Include Google Maps script with env variables
-      var GOOGLE_API_KEY = $.get("/welcome/1", function(googleApiKey) {
-        var JSLink = "https://maps.googleapis.com/maps/api/js?key=" + googleApiKey.GoogleAPIKey + "&callback=makeMap";
-        var JSElement = document.createElement('script');
-        JSElement.src = JSLink;
-        document.getElementsByTagName('head')[0].appendChild(JSElement);
-      })
+    // Include Google Maps script with env variables
+    var GOOGLE_API_KEY = $.get("/welcome/1", function(googleApiKey) {
+      var JSLink = "https://maps.googleapis.com/maps/api/js?key=" + googleApiKey.GoogleAPIKey + "&callback=makeMap";
+      var JSElement = document.createElement('script');
+      JSElement.src = JSLink;
+      document.getElementsByTagName('head')[0].appendChild(JSElement);
+    })
 
 // CityButton Constructor
 function CityButton(cityDiv, map, city) {
