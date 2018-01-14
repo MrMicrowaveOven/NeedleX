@@ -17,6 +17,6 @@ So let's go change some lives people!
 
 Clone the repo locally, email Malekai@Zagorski.com (or slack him) for the environment variables.
 
-To clone the local database, opening http://localhost:3000/locations/1/edit will pull the current database from the spreadsheet.
+To clone the local database, running an update on http://localhost:3000/locations/1/edit will pull the current database from the spreadsheet.
 
 And that's it!  Let me know if you have any questions.
