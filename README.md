@@ -10,3 +10,13 @@ A map of Needle Exchange locations in the bay area (and soon to be other areas).
 4. Code review is good!  Please take criticism well.  On that same note, don't be afraid to be say something if something could be done a better way.
 
 So let's go change some lives people!
+
+## Getting started
+
+### Setting your local environment
+
+Clone the repo locally, email Malekai@Zagorski.com (or slack him) for the environment variables.
+
+To clone the local database, opening http://localhost:3000/locations/1/edit will pull the current database from the spreadsheet.
+
+And that's it!  Let me know if you have any questions.
