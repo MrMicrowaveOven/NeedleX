@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   root 'welcome#index'
   resources :locations
   resources :availabilities
+  get '/info', to: 'welcome#info'
 end
