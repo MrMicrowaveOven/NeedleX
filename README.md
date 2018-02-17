@@ -20,3 +20,10 @@ Clone the repo locally, email Malekai@Zagorski.com (or slack him) for the enviro
 To clone the local database, running an update on http://localhost:3000/locations/1/edit will pull the current database from the spreadsheet.
 
 And that's it!  Let me know if you have any questions.
+
+## Changing the list of services
+
+As of now, it requires an Engineer to change the list of services a location can have.  Here's the process to doing so.
+
+Edit the SERVICES constant on index.html to match columns starting at AA on the spreadsheet.
+Edit the number on the locations_controller#create so that the correct number of columns are gathered.
