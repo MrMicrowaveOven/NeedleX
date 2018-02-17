@@ -63,8 +63,8 @@ class LocationsController < ApplicationController
     sheets.each_with_index do |sheet, sheet_index|
       sheet.each_with_index do |row, location_index|
         services = []
-        (26..47).to_a.each do |service_index|
-          services << (row[service_index] == 'Y' ? '1' : '0')
+        (26..49).to_a.each do |service_index|
+          services << (row[service_index] == 'Y' || row[service_index] == 'T' ? '1' : '0')
         end
         services_string = services.join
         location = Location.new({
