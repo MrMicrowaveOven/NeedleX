@@ -50,7 +50,10 @@
       var mapOptions = {
         center: new google.maps.LatLng(lat, lng),
         zoom: mobile ? 13 : 13,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        fullscreenControlOptions: {
+          position: google.maps.ControlPosition.BOTTOM_LEFT
+        }
       }
       var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
