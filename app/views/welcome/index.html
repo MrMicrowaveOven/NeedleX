@@ -20,6 +20,7 @@
       "Speciality LGBTQ+ services", "Speciality in HIV Services", "Crisis Intervention",
       "Herbal/Acupuncture Services", "24 Hour Needle Drop", "Walgreens Pharmacy"
     ]
+    FILTERS = ["Walgreens Sharps Bins", "24-Hour Needle Drop", "Needle Exchanges"]
     CITIES = [
       { name: "SF",
         center: {
@@ -39,6 +40,7 @@
     ];
     dayButtons = [];
     cityButtons = [];
+    filterButtons = [];
     markers = [];
     infoWindows = [];
     availabilities = []
@@ -71,6 +73,15 @@
         var cityControl = new CityButton(cityDiv, map, city)
         map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(cityDiv)
       })
+
+      FILTERS.forEach(function(filter, filterIndex) {
+        var filterDiv = document.createElement('div');
+        var filterControl = new FilterButton(filterDiv, map, filter)
+
+        filterDiv.index = filterIndex
+        map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(filterDiv)
+      })
+
       addMarkers(map);
       map.addListener('click', function(position) {
         console.log("Click recorded!  Here's your information:");
@@ -289,6 +300,41 @@ function CityButton(cityDiv, map, city) {
   });
   cityButtons.push(controlUI)
 }
+
+// FilterButton Constructor
+      function FilterButton(controlDiv, map, filter) {
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '3px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '2px';
+        controlUI.style.textAlign = 'center';
+        // controlUI.title = 'Click to show c';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = mobile ? '24px' : '16px';
+        controlText.style.lineHeight = mobile ? '57px' : '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = filter;
+        controlUI.appendChild(controlText);
+
+        // Setup the click event listeners: simply set the map to Chicago.
+        controlUI.addEventListener('click', function() {
+          var currentColor = controlUI.style.backgroundColor
+          controlUI.style.backgroundColor = currentColor == "rgb(255, 255, 255)" ? "darkgray" : "rgb(255, 255, 255)";
+          hideAllMarkers()
+          showApplicableMarkers()
+        });
+        dayButtons.push(controlUI)
+      }
 
 // DayButton Constructor
       function DayButton(controlDiv, map, day, selected) {
