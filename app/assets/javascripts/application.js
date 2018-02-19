@@ -13,3 +13,13 @@
 //= require rails-ujs
 //= require turbolinks
 //= require_tree .
+var current_location = window.location.href
+var edit_page = current_location.indexOf('/locations/1/edit') !== -1;
+var info_page = current_location.indexOf('/info') !== -1;
+if (edit_page) {
+  runEditPageScripts()
+} else if (info_page) {
+  runInfoPageScripts()
+} else {
+  runIndexPageScripts()
+}
