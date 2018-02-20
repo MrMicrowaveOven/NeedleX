@@ -15,7 +15,7 @@ function addMarkers(map) {
 
     data.forEach(function(location, locationIndex) {
       // map.setCenter(results[0].geometry.location);
-      var sizeOfIcons = MOBILE ? new google.maps.Size(96, 96) : new google.maps.Size(48, 48)
+      var sizeOfIcons = MOBILE ? new google.maps.Size(96, 96) : new google.maps.Size(36, 36)
       if (location.services[WALGREENS_INDEX] == "1") {
         var image_link = WALGREENS_IMAGE_LINK
       } else if (location.services[NEEDLE_DROP_INDEX] == "1") {
