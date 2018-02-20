@@ -41,7 +41,7 @@ function CityButton(cityDiv, map, city) {
   controlUI.style.cursor = 'pointer';
   controlUI.style.marginBottom = '22px';
   controlUI.style.textAlign = 'center';
-  controlUI.style.width = mobile ? '200px' : '100px';
+  controlUI.style.width = MOBILE ? '200px' : '100px';
   // controlUI.title = 'Click to show c';
   cityDiv.appendChild(controlUI);
 
@@ -49,8 +49,8 @@ function CityButton(cityDiv, map, city) {
   var controlText = document.createElement('div');
   controlText.style.color = 'rgb(25,25,25)';
   controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-  controlText.style.fontSize = mobile ? '24px' : '16px';
-  controlText.style.lineHeight = mobile ? '57px' : '38px';
+  controlText.style.fontSize = MOBILE ? '24px' : '16px';
+  controlText.style.lineHeight = MOBILE ? '57px' : '38px';
   controlText.style.paddingLeft = '5px';
   controlText.style.paddingRight = '5px';
   controlText.innerHTML = city.name;
@@ -84,8 +84,8 @@ function DayButton(controlDiv, map, day, selected) {
   var controlText = document.createElement('div');
   controlText.style.color = 'rgb(25,25,25)';
   controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-  controlText.style.fontSize = mobile ? '24px' : '16px';
-  controlText.style.lineHeight = mobile ? '57px' : '38px';
+  controlText.style.fontSize = MOBILE ? '24px' : '16px';
+  controlText.style.lineHeight = MOBILE ? '57px' : '38px';
   controlText.style.paddingLeft = '5px';
   controlText.style.paddingRight = '5px';
   controlText.innerHTML = day;
