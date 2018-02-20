@@ -6,23 +6,11 @@ function addMarkers(map) {
       }
     }));
     console.log("Greetings admin!  This is where click information will be displayed.");
-    var NEEDLE_IMAGE_LINK = "https://68.media.tumblr.com/08815ef78ff0dc07bf671d7dc25f2428/tumblr_ovgx0j0zXk1v497yzo1_75sq.png"
-    var WALGREENS_IMAGE_LINK = "https://78.media.tumblr.com/092aab67ffc39aae023e160375e9bb7f/tumblr_p4bc3tXoZ91v497yzo1_75sq.png"
-    var NEEDLE_DROP_24_HOUR_IMAGE_LINK = "https://78.media.tumblr.com/ffc3326aaf468702a057b9bac366f9c5/tumblr_p4bc3tXoZ91v497yzo2_75sq.png"
-
-    WALGREENS_INDEX = SERVICES.indexOf("Walgreens Pharmacy")
-    NEEDLE_DROP_INDEX = SERVICES.indexOf("24 Hour Needle Drop")
 
     data.forEach(function(location, locationIndex) {
       // map.setCenter(results[0].geometry.location);
       var sizeOfIcons = MOBILE ? new google.maps.Size(96, 96) : new google.maps.Size(36, 36)
-      if (location.services[WALGREENS_INDEX] == "1") {
-        var image_link = WALGREENS_IMAGE_LINK
-      } else if (location.services[NEEDLE_DROP_INDEX] == "1") {
-        var image_link = NEEDLE_DROP_24_HOUR_IMAGE_LINK
-      } else {
-        var image_link = NEEDLE_IMAGE_LINK
-      }
+      image_link = getLocationImageLink(location)
 
       var image = {
         url: image_link,
@@ -128,4 +116,14 @@ function addMarkers(map) {
     hideAllMarkers()
     showApplicableMarkers()
   })
+}
+
+function getLocationImageLink(location) {
+  if (location.services[WALGREENS_INDEX] == "1") {
+    return WALGREENS_IMAGE_LINK
+  } else if (location.services[NEEDLE_DROP_INDEX] == "1") {
+    return NEEDLE_DROP_24_HOUR_IMAGE_LINK
+  } else {
+    return NEEDLE_IMAGE_LINK
+  }
 }

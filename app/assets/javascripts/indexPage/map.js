@@ -15,7 +15,7 @@ function makeMap(lat, lng) {
   addDayFilterButtonsToMap(map)
   addLocationControlsToMap(map)
   addInfoButtonToMap(map)
-
+  addTypeFiltersToMap(map)
   addMarkers(map);
 
   // For admins to add locations
