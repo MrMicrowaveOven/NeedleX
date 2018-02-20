@@ -160,7 +160,6 @@ if (window.location.href.indexOf('/locations/1/edit') !== -1) {
       })
     })
   }
-  defineAJAX()
 
   function updateRowCount() {
     numRows = $("#table").find(".rowOfData").length
