@@ -7,7 +7,8 @@ function makeMap(lat, lng) {
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     fullscreenControlOptions: {
       position: google.maps.ControlPosition.BOTTOM_LEFT
-    }
+    },
+    styles: MAP_STYLES
   }
   var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
