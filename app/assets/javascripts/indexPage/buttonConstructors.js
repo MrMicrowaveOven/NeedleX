@@ -31,7 +31,7 @@ function InfoButton(controlDiv, map) {
 }
 
 // CityButton Constructor
-function CityButton(cityDiv, map, city) {
+function CityButton(cityDiv, map, city, fontSizes, lineHeights) {
   // Set CSS for the control border.
   var controlUI = document.createElement('div');
   controlUI.style.backgroundColor = '#fff';
@@ -49,8 +49,8 @@ function CityButton(cityDiv, map, city) {
   var controlText = document.createElement('div');
   controlText.style.color = 'rgb(25,25,25)';
   controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-  controlText.style.fontSize = MOBILE ? '24px' : '16px';
-  controlText.style.lineHeight = MOBILE ? '57px' : '38px';
+  controlText.style.fontSize = MOBILE ? fontSizes[0] : fontSizes[1];
+  controlText.style.lineHeight = MOBILE ? lineHeights[0] : lineHeights[1];
   controlText.style.paddingLeft = '5px';
   controlText.style.paddingRight = '5px';
   controlText.innerHTML = city.name;

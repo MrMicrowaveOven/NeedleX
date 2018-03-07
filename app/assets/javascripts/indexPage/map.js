@@ -26,7 +26,9 @@ function makeMap(lat, lng) {
   // Add locations controls at bottom of screen
   CITIES.forEach(function(city, cityIndex) {
     var cityDiv = document.createElement('div');
-    var cityControl = new CityButton(cityDiv, map, city)
+    var fontSizes = cityIndex == 0 ? ['24px', '16px'] : ['18px', '12px']
+    var lineHeights = cityIndex == 0 ? ['57px', '38px'] : ['30px', '20px']
+    var cityControl = new CityButton(cityDiv, map, city, fontSizes, lineHeights)
     map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(cityDiv)
   })
 
