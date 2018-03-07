@@ -15,12 +15,12 @@ CITIES = [
       lat: MOBILE ? 37.77 : 37.765,
       lng: MOBILE ? -122.44 : -122.42,
     }, zoom: 13 },
-  { name: "East Bay",
+  { name: "East Bay<br>(coming soon)",
     center: {
       lat: MOBILE ? 37.85 : 37.87,
       lng: MOBILE ? -122.25 : -122.2,
     }, zoom: 12 },
-  { name: "NY",
+  { name: "NY<br>(coming soon)",
     center: {
       lat: MOBILE ? 43 : 43,
       lng: MOBILE ? -76 : -76,
