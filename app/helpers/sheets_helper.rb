@@ -10,12 +10,13 @@ module SheetsHelper
 
     session = GoogleDrive::Session.from_service_account_key(config_struct)
     worksheets_array = []
-    worksheets = session.spreadsheet_by_key(ENV['SPREADSHEET_ID']).worksheets
+    worksheets = session.spreadsheet_by_key(ENV['SPREADSHEET_ID']).worksheets + session.spreadsheet_by_key(ENV['SPREADSHEET_ID_2']).worksheets
+
     worksheets.each do |worksheet|
       next if worksheet[1,1].blank?
       rows = [];
       (2..worksheet.num_rows).each_with_index do |row|
-        break if worksheet[row, 1].blank?
+        break if worksheet[row, 3].blank?
         new_row = []
         (1..worksheet.num_cols).each do |col|
           new_row << worksheet[row, col]
@@ -35,7 +36,7 @@ module SheetsHelper
     }.to_json)
 
     session = GoogleDrive::Session.from_service_account_key(config_struct)
-    worksheets = session.spreadsheet_by_key(ENV['SPREADSHEET_ID']).worksheets
+    worksheets = session.spreadsheet_by_key(ENV['SPREADSHEET_ID']).worksheets + session.spreadsheet_by_key(ENV['SPREADSHEET_ID_2']).worksheets
     current_worksheet = worksheets[location.sheet_number]
 
     current_worksheet[location.row_number, 24] = location.lat
