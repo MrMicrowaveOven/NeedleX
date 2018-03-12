@@ -20,7 +20,7 @@ CITIES = [
       lat: MOBILE ? 37.85 : 37.87,
       lng: MOBILE ? -122.25 : -122.2,
     }, zoom: 12 },
-  { name: "NY<br>(coming soon)",
+  { name: "NY",
     center: {
       lat: MOBILE ? 43 : 43,
       lng: MOBILE ? -76 : -76,
