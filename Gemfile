@@ -9,7 +9,7 @@ end
 
 gem 'dotenv-rails', groups: [:development, :test]
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.3'
+gem 'rails', '~> 5.2.7'
 # Use pg as the database for Active Record
 gem 'pg', groups: [:production]
 gem 'sqlite3', groups: [:development, :test]
